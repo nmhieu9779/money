@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import Hoshi from "../Component/Hoshi"
 import firebase from "../../Firebase"
+import { LoginManager, AccessToken } from "react-native-fbsdk"
 
 export default class LoginScreen extends Component {
   constructor() {
@@ -48,7 +49,10 @@ export default class LoginScreen extends Component {
             or login with your social account
           </Text>
           <View style={styles.socialContainer}>
-            <TouchableOpacity style={[styles.btnFacebook, styles.btnSocial]}>
+            <TouchableOpacity
+              style={[styles.btnFacebook, styles.btnSocial]}
+              onPress={this.onLoginFacebook.bind(this)}
+            >
               <FontAwesome5 style={styles.iconSocial} name={"facebook"} />
               <Text style={styles.labelSocial}>FACEBOOK</Text>
             </TouchableOpacity>
@@ -70,6 +74,33 @@ export default class LoginScreen extends Component {
         console.log(response)
       })
       .catch(error => console.log(error.message))
+  }
+  onLoginFacebook = () => {
+    LoginManager.logInWithReadPermissions(["email"]).then(
+      function(result) {
+        if (result.isCancelled) {
+          console.log("Login Cancelled")
+        } else {
+          AccessToken.getCurrentAccessToken().then(data => {
+            const credential = firebase.auth.FacebookAuthProvider.credential(
+              data.accessToken
+            )
+            firebase
+              .auth()
+              .signInAndRetrieveDataWithCredential(credential)
+              .then(response => {
+                console.log(response)
+              })
+              .catch(error => {
+                console.log(error)
+              })
+          })
+        }
+      },
+      function(error) {
+        console.log(error)
+      }
+    )
   }
 }
 
