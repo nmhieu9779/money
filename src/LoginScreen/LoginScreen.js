@@ -2,108 +2,145 @@ import React, { Component } from "react"
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import Hoshi from "../Component/Hoshi"
+import firebase from "../../Firebase"
 
 export default class LoginScreen extends Component {
+  constructor() {
+    super()
+    this.state = {
+      email: "nmhieu9779@gmail.com",
+      password: "664438"
+    }
+  }
   render() {
+    var { email, password } = this.state
     return (
       <View style={styles.loginContainer}>
-        <View
-          style={{
-            width: "100%",
-            height: "20%",
-            backgroundColor: "#5495ff",
-            justifyContent: "flex-end"
-          }}
-        >
-          <Text
-            style={{
-              color: "white",
-              fontWeight: "bold",
-              fontSize: 20,
-              margin: 15
-            }}
-          >
-            Login
-          </Text>
+        <View style={styles.topContainer}>
+          <Text style={styles.topLabel}>Login</Text>
         </View>
-        <View style={{ flex: 1, padding: 20 }}>
-          <Hoshi label={"Email"} />
-          <Hoshi label={"Password"} secureTextEntry={true} />
-          <View
-            style={{ width: "100%", alignItems: "flex-end", marginTop: 15 }}
-          >
+        <View style={styles.loginForm}>
+          <Hoshi
+            label={"Email"}
+            onChangeText={email => this.setState({ email: email })}
+            value={email}
+          />
+          <Hoshi
+            label={"Password"}
+            secureTextEntry={true}
+            onChangeText={password => this.setState({ password: password })}
+            value={password}
+          />
+          <View style={styles.fgpwContainer}>
             <TouchableOpacity>
-              <Text style={{ color: "#5495ff", fontWeight: "bold" }}>
-                FORGOT PASSWORD
-              </Text>
+              <Text style={styles.fgpwLabel}>FORGOT PASSWORD</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ alignItems: "center", paddingBottom: 30 }}>
+        <View style={styles.bottomContainer}>
           <TouchableOpacity
-            style={{
-              alignItems: "center",
-              width: "80%",
-              borderRadius: 999,
-              backgroundColor: "#35ba47",
-              padding: 10
-            }}
+            style={styles.btnLogin}
+            onPress={this.onLogin.bind(this)}
           >
-            <Text style={{ fontWeight: "bold", color: "white" }}>LOGIN</Text>
+            <Text style={styles.labelLogin}>LOGIN</Text>
           </TouchableOpacity>
-          <Text style={{ marginTop: 10 }}>
+          <Text style={styles.bottomLabel}>
             or login with your social account
           </Text>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-around" }}
-          >
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                padding: 10,
-                backgroundColor: "#5495ff",
-                borderRadius: 999,
-                width: "40%",
-                justifyContent: "center",
-                margin: 10
-              }}
-            >
-              <FontAwesome5
-                style={{ color: "white", paddingRight: 5 }}
-                name={"facebook"}
-              />
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                FACEBOOK
-              </Text>
+          <View style={styles.socialContainer}>
+            <TouchableOpacity style={[styles.btnFacebook, styles.btnSocial]}>
+              <FontAwesome5 style={styles.iconSocial} name={"facebook"} />
+              <Text style={styles.labelSocial}>FACEBOOK</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                padding: 10,
-                backgroundColor: "#d83c3c",
-                borderRadius: 999,
-                width: "40%",
-                justifyContent: "center",
-                margin: 10
-              }}
-            >
-              <FontAwesome5
-                style={{ color: "white", paddingRight: 5 }}
-                name={"google"}
-              />
-              <Text style={{ color: "white", fontWeight: "bold" }}>GOOGLE</Text>
+            <TouchableOpacity style={[styles.btnGoogle, styles.btnSocial]}>
+              <FontAwesome5 style={styles.iconSocial} name={"google"} />
+              <Text style={styles.labelSocial}>GOOGLE</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
     )
   }
+  onLogin = () => {
+    const { email, password } = this.state
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => console.log(error.message))
+  }
 }
 
 const styles = StyleSheet.create({
   loginContainer: {
     flex: 1
+  },
+  topContainer: {
+    width: "100%",
+    height: "20%",
+    backgroundColor: "#5495ff",
+    justifyContent: "flex-end"
+  },
+  topLabel: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 20,
+    margin: 15
+  },
+  bottomContainer: {
+    alignItems: "center",
+    paddingBottom: 30
+  },
+  labelLogin: {
+    fontWeight: "bold",
+    color: "white"
+  },
+  bottomLabel: {
+    marginTop: 10
+  },
+  socialContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around"
+  },
+  btnLogin: {
+    alignItems: "center",
+    width: "80%",
+    borderRadius: 999,
+    backgroundColor: "#35ba47",
+    padding: 10
+  },
+  btnSocial: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 999,
+    width: "40%",
+    justifyContent: "center",
+    margin: 10
+  },
+  btnFacebook: { backgroundColor: "#5495ff" },
+  btnGoogle: { backgroundColor: "#d83c3c" },
+  iconSocial: {
+    color: "white",
+    paddingRight: 5
+  },
+  labelSocial: {
+    color: "white",
+    fontWeight: "bold"
+  },
+  loginForm: {
+    flex: 1,
+    padding: 20
+  },
+  fgpwContainer: {
+    width: "100%",
+    alignItems: "flex-end",
+    marginTop: 15
+  },
+  fgpwLabel: {
+    color: "#5495ff",
+    fontWeight: "bold"
   }
 })
