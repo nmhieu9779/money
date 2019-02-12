@@ -21,7 +21,7 @@ export default class Hoshi extends BaseInput {
   }
 
   static defaultProps = {
-    borderColor: "red",
+    borderColor: "#17C8FF",
     height: 48
   }
 
