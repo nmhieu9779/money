@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { StyleSheet, Animated, Dimensions, AsyncStorage } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 
-const { width, height } = Dimensions.get("window")
+const { width } = Dimensions.get("window")
 
 export default class SplashScreen extends Component {
   constructor() {

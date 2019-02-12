@@ -10,19 +10,23 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import Hoshi from "../Component/Hoshi"
 import firebase from "../../Firebase"
 import { LoginManager, AccessToken } from "react-native-fbsdk"
-
+import MessageBox from "../Component/MessageBox"
 export default class LoginScreen extends Component {
   constructor() {
     super()
     this.state = {
       email: "nmhieu9779@gmail.com",
-      password: "664438"
+      password: "664438",
+      showMessageBox: false,
+      message: "",
+      status: ""
     }
   }
   render() {
     var { email, password } = this.state
     return (
       <View style={styles.loginContainer}>
+        {this.showMessageBox()}
         <View style={styles.topContainer}>
           <Text style={styles.topLabel}>Login</Text>
         </View>
@@ -79,7 +83,13 @@ export default class LoginScreen extends Component {
       .then(response => {
         this._loginAsync(response.user.uid)
       })
-      .catch(error => console.log(error.message))
+      .catch(error =>
+        this.setState({
+          showMessageBox: true,
+          message: error.message,
+          status: "Login Fail"
+        })
+      )
   }
   onLoginFacebook = () => {
     LoginManager.logInWithReadPermissions(["email"]).then(
@@ -112,6 +122,16 @@ export default class LoginScreen extends Component {
     await AsyncStorage.setItem("uid", uid)
     this.props.navigation.navigate("drawerStack")
   }
+  showMessageBox = () =>
+    this.state.showMessageBox ? (
+      <MessageBox
+        onPressOk={() => {
+          this.setState({ showMessageBox: false, message: "", status: "" })
+        }}
+        message={this.state.message}
+        status={this.state.status}
+      />
+    ) : null
 }
 
 const styles = StyleSheet.create({
