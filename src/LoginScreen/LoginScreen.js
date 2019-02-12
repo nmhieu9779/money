@@ -1,5 +1,11 @@
 import React, { Component } from "react"
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native"
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  AsyncStorage
+} from "react-native"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import Hoshi from "../Component/Hoshi"
 import firebase from "../../Firebase"
@@ -71,7 +77,7 @@ export default class LoginScreen extends Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(response => {
-        console.log(response)
+        this._loginAsync(response.user.uid)
       })
       .catch(error => console.log(error.message))
   }
@@ -101,6 +107,10 @@ export default class LoginScreen extends Component {
         console.log(error)
       }
     )
+  }
+  _loginAsync = async uid => {
+    await AsyncStorage.setItem("uid", uid)
+    this.props.navigation.navigate("drawerStack")
   }
 }
 
