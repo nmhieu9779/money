@@ -3,6 +3,8 @@ import { TouchableOpacity, Text, AsyncStorage, ScrollView } from "react-native"
 import HomeScreen from "../HomeScreen/HomeScreen"
 import LoginScreen from "../LoginScreen/LoginScreen"
 import SplashScreen from "../SplashScreen/SplashScreen"
+import RegistrationScreen from "../RegistrationScreen/RegistrationScreen"
+
 import {
   createStackNavigator,
   createAppContainer,
@@ -92,7 +94,7 @@ const styles = {
     paddingRight: 50
   },
   headerStyle: {
-    backgroundColor: "#17C8FF"
+    backgroundColor: "#329BFF"
   }
 }
 
@@ -130,7 +132,8 @@ const DrawerNavigation = createStackNavigator(
 
 const LoginStack = createStackNavigator(
   {
-    loginScreen: { screen: LoginScreen }
+    loginScreen: { screen: LoginScreen },
+    registrationScreen: { screen: RegistrationScreen }
   },
   { headerMode: "none" }
 )

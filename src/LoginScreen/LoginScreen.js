@@ -12,16 +12,17 @@ import firebase from "../../Firebase"
 import { LoginManager, AccessToken } from "react-native-fbsdk"
 import MessageBox from "../Component/MessageBox"
 export default class LoginScreen extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      email: "nmhieu9779@gmail.com",
-      password: "664438",
+      email: "",
+      password: "",
       showMessageBox: false,
       message: "",
       status: ""
     }
   }
+
   render() {
     var { email, password } = this.state
     return (
@@ -71,6 +72,12 @@ export default class LoginScreen extends Component {
               <Text style={styles.labelSocial}>GOOGLE</Text>
             </TouchableOpacity>
           </View>
+          <View style={styles.registrationContainer}>
+            <Text>Don't have a account?</Text>
+            <TouchableOpacity onPress={this.onRegistration.bind(this)}>
+              <Text style={styles.registration}>Registration</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     )
@@ -118,10 +125,15 @@ export default class LoginScreen extends Component {
       }
     )
   }
+  onRegistration = () => {
+    this.props.navigation.navigate("registrationScreen")
+  }
+
   _loginAsync = async uid => {
     await AsyncStorage.setItem("uid", uid)
     this.props.navigation.navigate("drawerStack")
   }
+
   showMessageBox = () =>
     this.state.showMessageBox ? (
       <MessageBox
@@ -169,7 +181,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "80%",
     borderRadius: 999,
-    backgroundColor: "#35ba47",
+    backgroundColor: "#329BFF",
     padding: 10
   },
   btnSocial: {
@@ -201,6 +213,14 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   fgpwLabel: {
+    color: "#5495ff",
+    fontWeight: "bold"
+  },
+  registrationContainer: {
+    flexDirection: "row"
+  },
+  registration: {
+    paddingLeft: 5,
     color: "#5495ff",
     fontWeight: "bold"
   }
