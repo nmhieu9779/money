@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native"
+import { View, StyleSheet, TouchableOpacity, Text, Button } from "react-native"
 
 export default class LoginScreen extends Component {
   constructor() {
@@ -7,7 +7,14 @@ export default class LoginScreen extends Component {
     this.state = {}
   }
   render() {
-    return <View style={styles.homeContainer} />
+    return (
+      <View style={styles.homeContainer}>
+        <Button
+          onPress={() => this.props.navigation.navigate("CategoryScreen")}
+          title={"abc"}
+        />
+      </View>
+    )
   }
 }
 
