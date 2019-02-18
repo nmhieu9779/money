@@ -4,17 +4,20 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  FlatList
+  FlatList,
+  Modal,
+  Alert
 } from "react-native"
 import CollapseView from "../Component/Collapse"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import firebase from "../../Firebase"
 import Spinner from "../Component/LoadingHud"
+import AddCategoryScreen from "./AddCategoryScreen"
 
 export default class CategoryScreen extends Component {
   static navigationOptions = ({ navigation }) => (
     (onPressAddCategory = () => {
-      console.log("add")
+      me.setModalVisible(true)
     }),
     {
       headerRight: (
@@ -30,7 +33,13 @@ export default class CategoryScreen extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {}
+    me = this
+    this.state = { visible: false }
+    console.ignoredYellowBox = ["Setting a timer"]
+  }
+
+  setModalVisible(visible) {
+    this.setState({ visible: visible })
   }
 
   componentWillMount = () => this.setState({ showHud: true })
@@ -52,7 +61,7 @@ export default class CategoryScreen extends Component {
       .finally(() =>
         setTimeout(() => {
           this.setState({ showHud: false })
-        }, 600)
+        }, 1000)
       )
       .catch(error => console.log(error))
   }
@@ -66,7 +75,11 @@ export default class CategoryScreen extends Component {
   }
 
   itemBody = item => (
-    <TouchableOpacity activeOpacity={1} style={styles.headerCollapseContainer}>
+    <TouchableOpacity
+      key={item.icon}
+      activeOpacity={1}
+      style={styles.headerCollapseContainer}
+    >
       <View style={styles.iconHeaderContainer}>
         <FontAwesome5 size={20} name={item.icon} />
       </View>
@@ -118,35 +131,6 @@ export default class CategoryScreen extends Component {
     }
   }
 
-  // AddCategory() {
-  //   return (
-  //     <Dialog
-  //       onTouchOutside={() => {
-  //         this.setState({ scaleAnimationDialog: false })
-  //       }}
-  //       width={0.9}
-  //       visible={scaleAnimationDialog}
-  //       dialogAnimation={new ScaleAnimation()}
-  //     >
-  //       <ScrollView>
-  //         <DialogTitle
-  //           textStyle={historyMeetingHeader}
-  //           title="Add expense category"
-  //           hasTitleBar={true}
-  //         />
-  //         <DialogContent>
-  //           <View style={{ flex: 1 }} />
-  //         </DialogContent>
-  //         <DialogButton
-  //           text="Close"
-  //           // onPress={this.onPress.bind(this)}
-  //           key="button-1"
-  //         />
-  //       </ScrollView>
-  //     </Dialog>
-  //   )
-  // }
-
   render() {
     let me = this
     return (
@@ -156,7 +140,10 @@ export default class CategoryScreen extends Component {
           textContent={"Loading..."}
           textStyle={{ color: "#FFF" }}
         />
-
+        <AddCategoryScreen
+          visible={this.state.visible}
+          onPressClose={() => this.setState({ visible: false })}
+        />
         <FlatList
           data={this.state.category}
           renderItem={({ item }) => (
@@ -168,6 +155,7 @@ export default class CategoryScreen extends Component {
               dataBody={item.data.data}
             />
           )}
+          keyExtractor={item => item.key}
         />
       </View>
     )
