@@ -34,8 +34,7 @@ export default class CategoryScreen extends Component {
   constructor(props) {
     super(props)
     me = this
-    this.state = { visible: false }
-    console.ignoredYellowBox = ["Setting a timer"]
+    this.state = { visible: false, listParentCategory: [] }
   }
 
   setModalVisible(visible) {
@@ -55,6 +54,10 @@ export default class CategoryScreen extends Component {
           category: querySnapshot.docs.map(item => ({
             data: item.data(),
             key: item.id
+          })),
+          listParentCategory: querySnapshot.docs.map(item => ({
+            id: item.id,
+            name: item.data().name
           }))
         })
       })
@@ -143,6 +146,7 @@ export default class CategoryScreen extends Component {
         <AddCategoryScreen
           visible={this.state.visible}
           onPressClose={() => this.setState({ visible: false })}
+          listParentCategory={this.state.listParentCategory}
         />
         <FlatList
           data={this.state.category}

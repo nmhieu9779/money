@@ -5,22 +5,31 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
-  Modal
+  Modal,
+  Picker,
+  Alert
 } from "react-native"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
+import firebase from "../../Firebase"
 
 defaultState = {
   iconName: "",
-  categoryName: ""
+  categoryName: "",
+  parentCategory: ""
 }
 export default class AddCategoryScreen extends Component {
   constructor(props) {
     super(props)
-    this.state = { iconName: "", categoryName: "" }
+    this.state = {
+      iconName: "",
+      categoryName: "",
+      parentCategory: ""
+    }
   }
   render() {
-    var { visible } = this.props
-    var { iconName, categoryName } = this.state
+    var { visible, listParentCategory } = this.props
+    var { iconName, categoryName, parentCategory } = this.state
+    console.disableYellowBox = true
     return (
       <Modal
         presentationStyle={"overFullScreen"}
@@ -47,7 +56,9 @@ export default class AddCategoryScreen extends Component {
             placeholderTextColor={"#ccc"}
             placeholder={"Category icon name"}
             value={iconName}
-            onChangeText={text => this.setState({ iconName: text })}
+            onChangeText={text =>
+              this.setState({ iconName: text.toLowerCase() })
+            }
           />
         </View>
         <View style={styles.container}>
@@ -62,12 +73,29 @@ export default class AddCategoryScreen extends Component {
             onChangeText={text => this.setState({ categoryName: text })}
           />
         </View>
-        <TouchableOpacity style={styles.btnSaveContainer}>
+        <View style={styles.pickerContainer}>
+          <Text>Select Parent Category</Text>
+          <Picker
+            style={{ flex: 1 }}
+            selectedValue={parentCategory}
+            onValueChange={(itemValue, itemIndex) =>
+              this.setState({ parentCategory: itemValue })
+            }
+          >
+            <Picker.Item label={"Select Parent Category"} value={null} />
+            {listParentCategory.map(item => (
+              <Picker.Item key={item.id} label={item.name} value={item.id} />
+            ))}
+          </Picker>
+        </View>
+        <TouchableOpacity
+          onPress={this.onPressSave.bind(this)}
+          style={styles.btnSaveContainer}
+        >
           <FontAwesome5
             style={[styles.btnIconSave, styles.icon]}
             size={20}
             name={"save"}
-            onPress={this.onPressSave.bind(this)}
           />
           <Text style={styles.btnLabelSave}>Save</Text>
         </TouchableOpacity>
@@ -75,8 +103,26 @@ export default class AddCategoryScreen extends Component {
     )
   }
   onPressSave = () => {
-    let { iconName, categoryName } = this.state
+    let { iconName, categoryName, parentCategory } = this.state
+    data = {
+      data: firebase.firestore.FieldValue.arrayUnion({
+        icon: iconName,
+        name: categoryName
+      })
+    }
+    if (this.validateData(iconName, categoryName, parentCategory)) {
+      return Alert.alert("Please again!!")
+    }
+    firebase
+      .firestore()
+      .collection("category")
+      .doc(parentCategory)
+      .update(data)
+      .then(() => this.setState(defaultState))
+      .catch(error => console.log(error.message))
   }
+  validateData = (iconName, categoryName, parentCategory) =>
+    !iconName || !categoryName || !parentCategory
 }
 
 const styles = StyleSheet.create({
@@ -150,5 +196,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: "white"
-  }
+  },
+  pickerContainer: { flexDirection: "row", alignItems: "center", margin: 5 }
 })
