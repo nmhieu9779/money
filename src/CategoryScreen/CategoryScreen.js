@@ -4,15 +4,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  FlatList,
-  Modal,
-  Alert
+  FlatList
 } from "react-native"
 import CollapseView from "../Component/Collapse"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import firebase from "../../Firebase"
 import Spinner from "../Component/LoadingHud"
 import AddCategoryScreen from "./AddCategoryScreen"
+import EditCategoryScreen from "./EditCategoryScreen"
 
 export default class CategoryScreen extends Component {
   static navigationOptions = ({ navigation }) => (
@@ -34,7 +33,12 @@ export default class CategoryScreen extends Component {
   constructor(props) {
     super(props)
     me = this
-    this.state = { visible: false, listParentCategory: [] }
+    this.state = {
+      visibleEdit: false,
+      visible: false,
+      listParentCategory: [],
+      editCategory: { item: { icon: "", name: "" }, key: "" }
+    }
   }
 
   setModalVisible(visible) {
@@ -44,8 +48,13 @@ export default class CategoryScreen extends Component {
   componentWillMount = () => this.setState({ showHud: true })
 
   componentDidMount = () => {
+    this.getCategoryFromSever()
+  }
+
+  getCategoryFromSever = () => {
+    this.setState({ showHud: true })
     let me = this
-    category = firebase
+    firebase
       .firestore()
       .collection("category")
       .get()
@@ -69,26 +78,37 @@ export default class CategoryScreen extends Component {
       .catch(error => console.log(error))
   }
 
-  _renderCollapseView = data => {
+  _renderCollapseView = (data, key) => (
+    <View style={styles.collapseView}>
+      {data.map(item => this.itemBody(item, key))}
+    </View>
+  )
+
+  itemBody = (item, key) => {
     return (
-      <View style={styles.collapseView}>
-        {data.map(item => this.itemBody(item))}
-      </View>
+      <TouchableOpacity
+        key={item.icon}
+        activeOpacity={1}
+        style={styles.headerCollapseContainer}
+      >
+        <View style={styles.iconHeaderContainer}>
+          <FontAwesome5 size={20} name={item.icon} />
+        </View>
+        <Text style={styles.titleHeader}>{item.name}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            this.onPressEdit(item, key)
+          }}
+          style={styles.btnEditContainer}
+        >
+          <FontAwesome5 size={20} name={"pen"} />
+        </TouchableOpacity>
+      </TouchableOpacity>
     )
   }
 
-  itemBody = item => (
-    <TouchableOpacity
-      key={item.icon}
-      activeOpacity={1}
-      style={styles.headerCollapseContainer}
-    >
-      <View style={styles.iconHeaderContainer}>
-        <FontAwesome5 size={20} name={item.icon} />
-      </View>
-      <Text style={styles.titleHeader}>{item.name}</Text>
-    </TouchableOpacity>
-  )
+  onPressEdit = (item, key) =>
+    this.setState({ editCategory: { item, key: key }, visibleEdit: true })
 
   _renderView = (collapse, title, icon) => {
     return (
@@ -145,7 +165,19 @@ export default class CategoryScreen extends Component {
         />
         <AddCategoryScreen
           visible={this.state.visible}
-          onPressClose={() => this.setState({ visible: false })}
+          onPressClose={() => {
+            this.setState({ visible: false })
+            this.getCategoryFromSever()
+          }}
+          listParentCategory={this.state.listParentCategory}
+        />
+        <EditCategoryScreen
+          visible={this.state.visibleEdit}
+          onPressClose={() => {
+            this.setState({ visibleEdit: false })
+            this.getCategoryFromSever()
+          }}
+          editCategory={this.state.editCategory}
           listParentCategory={this.state.listParentCategory}
         />
         <FlatList
@@ -168,7 +200,7 @@ export default class CategoryScreen extends Component {
 
 const styles = StyleSheet.create({
   categoryContainer: {
-    flex: 1
+    // flex: 1
   },
   container: {
     flex: 1,
@@ -208,5 +240,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "#ffffff"
   },
-  btnAdd: { color: "white", marginRight: 10 }
+  btnAdd: { color: "white", marginRight: 10 },
+  btnEditContainer: {
+    width: 40,
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center"
+  }
 })

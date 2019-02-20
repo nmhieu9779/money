@@ -82,7 +82,7 @@ class CollapseView extends Component {
           )}
         </TouchableOpacity>
         <View onLayout={this.endpoint}>
-          {this.props.renderCollapseView(this.props.dataBody)}
+          {this.props.renderCollapseView(this.props.dataBody, this.props.icon)}
         </View>
       </Animated.View>
     )
