@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { StyleSheet, Animated, Dimensions, AsyncStorage } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
+import firebase from "../../Firebase"
 
 const { width } = Dimensions.get("window")
 
@@ -9,11 +10,26 @@ export default class SplashScreen extends Component {
     super()
     this.animatedValue = new Animated.Value(0.3)
     this.animatedValue2 = new Animated.Value(0)
+    console.disableYellowBox = true
   }
 
   _bootstrapAsync = async () => {
     const uid = await AsyncStorage.getItem("uid")
-    this.props.navigation.navigate(uid ? "drawerStack" : "loginStack")
+    if (uid) {
+      var data = {}
+      await firebase
+        .firestore()
+        .collection("user")
+        .doc(uid)
+        .get()
+        .then(function(querySnapshot) {
+          data = querySnapshot.data()
+        })
+        .catch(error => console.log(error))
+      await this.props.navigation.navigate("HomeScreen", { data, uid: uid })
+    } else {
+      this.props.navigation.navigate("loginStack")
+    }
   }
 
   componentDidMount() {
@@ -26,12 +42,10 @@ export default class SplashScreen extends Component {
     Animated.timing(this.animatedValue2, {
       toValue: 1,
       delay: 200,
-      duration: 3000
+      duration: 10000
     }).start()
 
-    setTimeout(() => {
-      this._bootstrapAsync()
-    }, 3000)
+    this._bootstrapAsync()
   }
 
   render() {
