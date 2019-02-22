@@ -11,7 +11,11 @@ export default class HistoryScreen extends Component {
   render() {
     let { history } = this.props
     return (
-      <FlatList data={history} renderItem={item => this._renderItem(item)} />
+      <FlatList
+        data={history}
+        renderItem={this._renderItem}
+        keyExtractor={this._keyExtractor}
+      />
     )
   }
 
@@ -30,11 +34,13 @@ export default class HistoryScreen extends Component {
         </View>
         <View style={styles.itemLabel}>
           <FontAwesome5 style={styles.clock} name={"clock"} />
-          <Text>{moment(item.time).format("LLL")}</Text>
+          <Text>{moment(new Date(item.time)).format("LLL")}</Text>
         </View>
       </View>
     )
   }
+
+  _keyExtractor = item => moment(new Date(item.time)).format()
 }
 
 const styles = StyleSheet.create({
