@@ -16,11 +16,7 @@
     "react-native-gesture-handler": "^1.0.15",
     "react-native-linear-gradient": "^2.5.3",
     "react-native-vector-icons": "^6.2.0",
-    "react-navigation": "^3.2.1",
-    "react-redux": "^6.0.1",
-    "redux": "^4.0.1",
-    "redux-devtools-extension": "^2.13.8",
-    "redux-saga": "^1.0.1"
+    "react-navigation": "^3.2.1"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
