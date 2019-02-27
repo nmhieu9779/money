@@ -8,7 +8,6 @@ import {
 } from "react-native"
 import CollapseView from "../Component/Collapse"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
-import firebase from "../../Firebase"
 import Spinner from "../Component/LoadingHud"
 import AddCategoryScreen from "./AddCategoryScreen"
 import EditCategoryScreen from "./EditCategoryScreen"
@@ -45,37 +44,14 @@ export default class CategoryScreen extends Component {
     this.setState({ visible: visible })
   }
 
-  componentWillMount = () => this.setState({ showHud: true })
+  // componentWillMount = () => this.setState({ showHud: true })
 
-  componentDidMount = () => {
+  componentDidMount() {
     this.getCategoryFromSever()
   }
 
   getCategoryFromSever = () => {
-    this.setState({ showHud: true })
-    let me = this
-    firebase
-      .firestore()
-      .collection("category")
-      .get()
-      .then(function(querySnapshot) {
-        me.setState({
-          category: querySnapshot.docs.map(item => ({
-            data: item.data(),
-            key: item.id
-          })),
-          listParentCategory: querySnapshot.docs.map(item => ({
-            id: item.id,
-            name: item.data().name
-          }))
-        })
-      })
-      .finally(() =>
-        setTimeout(() => {
-          this.setState({ showHud: false })
-        }, 1000)
-      )
-      .catch(error => console.log(error))
+    this.props.onFetchCategory()
   }
 
   _renderCollapseView = (data, key) => (
@@ -156,6 +132,7 @@ export default class CategoryScreen extends Component {
 
   render() {
     let me = this
+    console.log(this.props)
     return (
       <View style={styles.categoryContainer}>
         <Spinner
@@ -169,7 +146,7 @@ export default class CategoryScreen extends Component {
             this.setState({ visible: false })
             this.getCategoryFromSever()
           }}
-          listParentCategory={this.state.listParentCategory}
+          listParentCategory={this.props.data.listParentCategory}
         />
         <EditCategoryScreen
           visible={this.state.visibleEdit}
@@ -178,10 +155,10 @@ export default class CategoryScreen extends Component {
             this.getCategoryFromSever()
           }}
           editCategory={this.state.editCategory}
-          listParentCategory={this.state.listParentCategory}
+          listParentCategory={this.props.data.listParentCategory}
         />
         <FlatList
-          data={this.state.category}
+          data={this.props.data.category}
           renderItem={({ item }) => (
             <CollapseView
               renderView={me._renderView}
