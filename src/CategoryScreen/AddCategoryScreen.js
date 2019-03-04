@@ -89,7 +89,7 @@ export default class AddCategoryScreen extends Component {
           </Picker>
         </View>
         <TouchableOpacity
-          onPress={this.onPressSave.bind(this)}
+          onPress={this.onPressSave}
           style={styles.btnSaveContainer}
         >
           <FontAwesome5
@@ -104,22 +104,12 @@ export default class AddCategoryScreen extends Component {
   }
   onPressSave = () => {
     let { iconName, categoryName, parentCategory } = this.state
-    data = {
-      data: firebase.firestore.FieldValue.arrayUnion({
-        icon: iconName,
-        name: categoryName
-      })
-    }
     if (this.validateData(iconName, categoryName, parentCategory)) {
       return Alert.alert("Please again!!")
     }
-    firebase
-      .firestore()
-      .collection("category")
-      .doc(parentCategory)
-      .update(data)
-      .then(() => this.setState(defaultState))
-      .catch(error => console.log(error.message))
+    this.props.onPressAddCategory(
+      (newCategory = { iconName, categoryName, parentCategory })
+    )
   }
   validateData = (iconName, categoryName, parentCategory) =>
     !iconName || !categoryName || !parentCategory

@@ -118,51 +118,27 @@ export default class EditCategoryScreen extends Component {
   async onPressSave() {
     let { iconName, categoryName, parentCategory } = this.state
     let editCategory = this.props.editCategory
-    dataOld = {
-      data: firebase.firestore.FieldValue.arrayRemove({
-        icon: editCategory.item.icon,
-        name: editCategory.item.name
-      })
-    }
-    dataNew = {
-      data: firebase.firestore.FieldValue.arrayUnion({
-        icon: iconName,
-        name: categoryName
-      })
-    }
     if (this.validateData(iconName, categoryName, parentCategory)) {
       return Alert.alert("Please again!!")
     }
-    await firebase
-      .firestore()
-      .collection("category")
-      .doc(editCategory.key)
-      .update(dataOld)
-      .then()
-      .catch(error => console.log(error.message))
-    await firebase
-      .firestore()
-      .collection("category")
-      .doc(parentCategory)
-      .update(dataNew)
-      .then(this.props.onPressClose)
-      .catch(error => console.log(error.message))
+    this.props.onPressEditCategory(
+      (dataNew = { iconName, categoryName, parentCategory }),
+      (dataOld = {
+        iconName: editCategory.item.icon,
+        categoryName: editCategory.item.name,
+        parentCategory: editCategory.key
+      })
+    )
   }
   onPressDelete = () => {
     let editCategory = this.props.editCategory
-    data = {
-      data: firebase.firestore.FieldValue.arrayRemove({
-        icon: editCategory.item.icon,
-        name: editCategory.item.name
+    this.props.onPressDeleteCategory(
+      (category = {
+        iconName: editCategory.item.icon,
+        categoryName: editCategory.item.name,
+        parentCategory: editCategory.key
       })
-    }
-    firebase
-      .firestore()
-      .collection("category")
-      .doc(editCategory.key)
-      .update(data)
-      .then(this.props.onPressClose)
-      .catch(error => console.log(error.message))
+    )
   }
   validateData = (iconName, categoryName, parentCategory) =>
     !iconName || !categoryName || !parentCategory

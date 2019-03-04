@@ -1,6 +1,6 @@
-import { call, all } from "redux-saga/effects"
-import { watchFetchCategory } from "./categorySagas"
+import { call, all, fork } from "redux-saga/effects"
+import { watchCategory } from "./categorySagas"
 
 export default function* rootSaga() {
-  yield call(watchFetchCategory)
+  yield call(watchCategory)
 }

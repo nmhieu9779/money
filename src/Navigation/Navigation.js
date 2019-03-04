@@ -4,7 +4,7 @@ import HomeScreen from "../HomeScreen/HomeScreen"
 import LoginScreen from "../LoginScreen/LoginScreen"
 import SplashScreen from "../SplashScreen/SplashScreen"
 import RegistrationScreen from "../RegistrationScreen/RegistrationScreen"
-import CategoryScreen from "../CategoryScreen/CategoryScreen"
+import CategoryContainer from "../containers/CategoryContainer"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 
 import {
@@ -112,7 +112,7 @@ const HomeScreen_StackNavigator = createStackNavigator({
     })
   },
   CategoryScreen: {
-    screen: CategoryScreen,
+    screen: CategoryContainer,
     navigationOptions: ({ navigation }) => ({
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: { ...styles.headerStyle },

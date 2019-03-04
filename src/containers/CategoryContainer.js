@@ -4,19 +4,33 @@ import CategoryScreen from "../CategoryScreen/CategoryScreen"
 import {
   fetchCategoryAction,
   fetchCategorySuccessAction,
-  fetchCategoryFailedAction
+  fetchCategoryFailedAction,
+  addCategoryAction,
+  addCategorySuccessAction,
+  addCategoryFailedAction,
+  editCategoryAction,
+  editCategorySuccessAction,
+  editCategoryFailedAction,
+  deleteCategoryAction,
+  deleteCategorySuccessAction,
+  deleteCategoryFailedAction
 } from "../actions"
 
-const mapStateToProps = state => {
-  return {
-    data: state.categoryReducers
-  }
-}
+const mapStateToProps = state => state.categoryReducers
 
 const mapDispatchToProps = dispatch => {
   return {
     onFetchCategory: () => {
       dispatch(fetchCategoryAction())
+    },
+    onAddCategory: newCategory => {
+      dispatch(addCategoryAction(newCategory))
+    },
+    onEditCategory: (dataNew, dataOld) => {
+      dispatch(editCategoryAction(dataNew, dataOld))
+    },
+    onDeleteCategory: category => {
+      dispatch(deleteCategoryAction(category))
     }
   }
 }

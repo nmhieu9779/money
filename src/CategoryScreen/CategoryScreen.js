@@ -11,7 +11,6 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import Spinner from "../Component/LoadingHud"
 import AddCategoryScreen from "./AddCategoryScreen"
 import EditCategoryScreen from "./EditCategoryScreen"
-
 export default class CategoryScreen extends Component {
   static navigationOptions = ({ navigation }) => (
     (onPressAddCategory = () => {
@@ -130,33 +129,75 @@ export default class CategoryScreen extends Component {
     }
   }
 
-  render() {
-    let me = this
-    console.log(this.props)
-    return (
-      <View style={styles.categoryContainer}>
-        <Spinner
-          visible={this.state.showHud}
-          textContent={"Loading..."}
-          textStyle={{ color: "#FFF" }}
-        />
+  addCategoryScreen = visible => {
+    if (visible) {
+      return (
         <AddCategoryScreen
-          visible={this.state.visible}
+          visible={visible}
           onPressClose={() => {
             this.setState({ visible: false })
-            this.getCategoryFromSever()
           }}
           listParentCategory={this.props.data.listParentCategory}
+          onPressAddCategory={this.onPressAddCategory.bind(this)}
         />
+      )
+    }
+    return null
+  }
+
+  onPressAddCategory = async newCategory => {
+    await this.props.onAddCategory(newCategory)
+    await this.setState({ visible: false })
+  }
+
+  editCategoryScreen = visibleEdit => {
+    if (visibleEdit) {
+      return (
         <EditCategoryScreen
-          visible={this.state.visibleEdit}
+          visible={visibleEdit}
           onPressClose={() => {
             this.setState({ visibleEdit: false })
-            this.getCategoryFromSever()
           }}
           editCategory={this.state.editCategory}
           listParentCategory={this.props.data.listParentCategory}
+          onPressEditCategory={this.onPressEditCategory.bind(this)}
+          onPressDeleteCategory={this.onPressDeleteCategory.bind(this)}
         />
+      )
+    }
+    return null
+  }
+
+  onPressEditCategory = async (dataNew, dataOld) => {
+    await this.props.onEditCategory(dataNew, dataOld)
+    await this.setState({ visibleEdit: false })
+  }
+
+  onPressDeleteCategory = async category => {
+    await this.props.onDeleteCategory(category)
+    await this.setState({ visibleEdit: false })
+  }
+
+  showHud = showHud => {
+    if (showHud) {
+      return (
+        <Spinner
+          visible={showHud}
+          textContent={"Loading..."}
+          textStyle={{ color: "#FFF" }}
+        />
+      )
+    }
+    return null
+  }
+
+  render() {
+    let me = this
+    return (
+      <View style={styles.categoryContainer}>
+        {this.showHud(this.props.showHud)}
+        {this.addCategoryScreen(this.state.visible)}
+        {this.editCategoryScreen(this.state.visibleEdit)}
         <FlatList
           data={this.props.data.category}
           renderItem={({ item }) => (
