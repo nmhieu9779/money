@@ -48,11 +48,7 @@ export default class HomeScreen extends Component {
             {"₫"}
           </Text>
         </View>
-        <Button
-          onPress={() => this.props.navigation.navigate("CategoryScreen")}
-          title={"abc"}
-        />
-        <BottomAppContainer history={[]} />
+        <BottomAppContainer />
       </View>
     )
   }

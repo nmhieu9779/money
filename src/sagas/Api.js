@@ -121,10 +121,25 @@ function* fetchWalletUser(uid) {
   return data
 }
 
+function* fetchHistoryUser(uid) {
+  var data = {}
+  yield firebase
+    .firestore()
+    .collection("history")
+    .doc(uid)
+    .get()
+    .then(function(querySnapshot) {
+      data = querySnapshot.data()
+    })
+    .catch(error => console.log(error))
+  return data
+}
+
 export const Api = {
   getCategoryFromFireBase,
   addCategory,
   editCategory,
   deleteCategory,
-  fetchWalletUser
+  fetchWalletUser,
+  fetchHistoryUser
 }

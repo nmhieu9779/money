@@ -2,6 +2,7 @@ import React from "react"
 import { TouchableOpacity, Text, AsyncStorage, ScrollView } from "react-native"
 import AddTransactionsScreen from "../TransactionsScreen/AddTransactionsScreen"
 import HistoryScreen from "../HistoryScreen/HistoryScreen"
+import HistoryContainer from "../containers/HistoryContainer"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 
 import {
@@ -70,8 +71,7 @@ const styles = {
 
 const HistoryScreen_StackNavigator = createStackNavigator({
   HistoryScreen: {
-    screen: HistoryScreen,
-    props: { history: "aaa" }
+    screen: HistoryContainer
   }
 })
 const AddTransactionsScreen_StackNavigator = createStackNavigator({
@@ -82,7 +82,9 @@ const AddTransactionsScreen_StackNavigator = createStackNavigator({
 
 const BottomAppContainer = createAppContainer(
   createBottomTabNavigator({
-    HistoryScreen: { screen: HistoryScreen_StackNavigator },
+    HistoryScreen: {
+      screen: HistoryScreen_StackNavigator
+    },
     AddTransactionsScreen: { screen: AddTransactionsScreen_StackNavigator }
   }),
   {

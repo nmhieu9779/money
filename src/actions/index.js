@@ -13,7 +13,10 @@ import {
   DELETE_CATEGORY_FAILED,
   FETCH_WALLET_USER,
   FETCH_WALLET_USER_SUCCESS,
-  FETCH_WALLET_USER_FAILED
+  FETCH_WALLET_USER_FAILED,
+  FETCH_HISTORY_USER,
+  FETCH_HISTORY_USER_SUCCESS,
+  FETCH_HISTORY_USER_FAILED
 } from "./actionTypes"
 
 export const fetchCategoryAction = () => {
@@ -89,5 +92,17 @@ export const fetchWalletUserSuccessAction = payload => ({
 
 export const fetchWalletUserFailedAction = error => ({
   type: FETCH_WALLET_USER_FAILED,
+  error
+})
+
+export const fetchHistoryUserAction = uid => ({ type: FETCH_HISTORY_USER, uid })
+
+export const fetchHistoryUserSuccessAction = payload => ({
+  type: FETCH_HISTORY_USER_SUCCESS,
+  payload
+})
+
+export const fetchHistoryUserFailedAction = error => ({
+  type: FETCH_HISTORY_USER_FAILED,
   error
 })

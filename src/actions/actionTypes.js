@@ -20,3 +20,7 @@ export const DELETE_CATEGORY_FAILED = "delete_category_failed"
 export const FETCH_WALLET_USER = "fetch_wallet_user"
 export const FETCH_WALLET_USER_SUCCESS = "fetch_wallet_user_success"
 export const FETCH_WALLET_USER_FAILED = "fetch_wallet_user_failed"
+
+export const FETCH_HISTORY_USER = "fetch_history_user"
+export const FETCH_HISTORY_USER_SUCCESS = "fetch_history_user_success"
+export const FETCH_HISTORY_USER_FAILED = "fetch_history_user_failed"

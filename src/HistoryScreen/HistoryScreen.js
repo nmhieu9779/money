@@ -4,10 +4,19 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import moment from "moment"
 
 export default class HistoryScreen extends Component {
+  static navigationOptions = {
+    header: null
+  }
+
   constructor() {
     super()
     this.state = {}
   }
+
+  componentDidMount = () => {
+    this.props.onFetchHistory("30Zhx7sy1bfvX8EPxiLwJHK0fjj2")
+  }
+
   render() {
     let { history } = this.props
     return (
