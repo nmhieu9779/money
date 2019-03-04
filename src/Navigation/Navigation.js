@@ -1,6 +1,7 @@
 import React from "react"
 import { TouchableOpacity, Text, AsyncStorage, ScrollView } from "react-native"
 import HomeScreen from "../HomeScreen/HomeScreen"
+import HomeContainer from "../containers/HomeContainer"
 import LoginScreen from "../LoginScreen/LoginScreen"
 import SplashScreen from "../SplashScreen/SplashScreen"
 import RegistrationScreen from "../RegistrationScreen/RegistrationScreen"
@@ -102,7 +103,7 @@ const styles = {
 
 const HomeScreen_StackNavigator = createStackNavigator({
   HomeScreen: {
-    screen: HomeScreen,
+    screen: HomeContainer,
     navigationOptions: ({ navigation }) => ({
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: { ...styles.headerStyle },

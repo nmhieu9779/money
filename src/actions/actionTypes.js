@@ -16,3 +16,7 @@ export const EDIT_CATEGORY_FAILED = "edit_category_failed"
 export const DELETE_CATEGORY = "delete_category"
 export const DELETE_CATEGORY_SUCCESS = "delete_category_success"
 export const DELETE_CATEGORY_FAILED = "delete_category_failed"
+
+export const FETCH_WALLET_USER = "fetch_wallet_user"
+export const FETCH_WALLET_USER_SUCCESS = "fetch_wallet_user_success"
+export const FETCH_WALLET_USER_FAILED = "fetch_wallet_user_failed"

@@ -106,9 +106,25 @@ function* deleteCategory(category) {
     .catch()
   return category
 }
+
+function* fetchWalletUser(uid) {
+  var data = {}
+  yield firebase
+    .firestore()
+    .collection("wallet")
+    .doc(uid)
+    .get()
+    .then(function(querySnapshot) {
+      data = querySnapshot.data()
+    })
+    .catch(error => console.log(error))
+  return data
+}
+
 export const Api = {
   getCategoryFromFireBase,
   addCategory,
   editCategory,
-  deleteCategory
+  deleteCategory,
+  fetchWalletUser
 }

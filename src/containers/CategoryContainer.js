@@ -16,7 +16,9 @@ import {
   deleteCategoryFailedAction
 } from "../actions"
 
-const mapStateToProps = state => state.categoryReducers
+const mapStateToProps = state => {
+  return state.categoryReducers
+}
 
 const mapDispatchToProps = dispatch => {
   return {

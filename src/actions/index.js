@@ -10,7 +10,10 @@ import {
   EDIT_CATEGORY_FAILED,
   DELETE_CATEGORY,
   DELETE_CATEGORY_SUCCESS,
-  DELETE_CATEGORY_FAILED
+  DELETE_CATEGORY_FAILED,
+  FETCH_WALLET_USER,
+  FETCH_WALLET_USER_SUCCESS,
+  FETCH_WALLET_USER_FAILED
 } from "./actionTypes"
 
 export const fetchCategoryAction = () => {
@@ -74,5 +77,17 @@ export const deleteCategorySuccessAction = payload => ({
 
 export const deleteCategoryFailedAction = error => ({
   type: DELETE_CATEGORY_FAILED,
+  error
+})
+
+export const fetchWalletUserAction = uid => ({ type: FETCH_WALLET_USER, uid })
+
+export const fetchWalletUserSuccessAction = payload => ({
+  type: FETCH_WALLET_USER_SUCCESS,
+  payload
+})
+
+export const fetchWalletUserFailedAction = error => ({
+  type: FETCH_WALLET_USER_FAILED,
   error
 })

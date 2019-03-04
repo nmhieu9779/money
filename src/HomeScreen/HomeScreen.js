@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text, Button } from "react-native"
 import firebase from "../../Firebase"
 import HistoryScreen from "../HistoryScreen/HistoryScreen"
 import BottomAppContainer from "../Navigation/TabbarBottomHome"
-export default class LoginScreen extends Component {
+export default class HomeScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -11,10 +11,12 @@ export default class LoginScreen extends Component {
 
   componentWillMount = () => {
     let data = this.props.navigation.state.params
-    this.setState(data)
+    this.setState({ uid: data.uid })
   }
 
-  componentDidMount = () => {}
+  componentDidMount = () => {
+    this.props.onFetchWalletUser(this.state.uid)
+  }
 
   getDataFromSeverWithUid = () => {
     this.setState({ showHud: true })
@@ -42,7 +44,7 @@ export default class LoginScreen extends Component {
         <View style={[styles.financialContainer, styles.boxShadow]}>
           <Text style={styles.financialLabel}>FINANCIAL STATEMENT</Text>
           <Text style={styles.financialStatement}>
-            {this.state.data.total}
+            {this.props.total}
             {"₫"}
           </Text>
         </View>
@@ -50,7 +52,7 @@ export default class LoginScreen extends Component {
           onPress={() => this.props.navigation.navigate("CategoryScreen")}
           title={"abc"}
         />
-        <BottomAppContainer history={this.state.data.history} />
+        <BottomAppContainer history={[]} />
       </View>
     )
   }
