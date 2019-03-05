@@ -3,6 +3,7 @@ import HomeScreen from "../HomeScreen/HomeScreen"
 import { fetchWalletUserAction } from "../actions"
 
 const mapStateToProps = state => {
+  console.log(state)
   return state.homeReducers
 }
 

@@ -10,6 +10,13 @@ import Hoshi from "../Component/Hoshi"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import moment from "moment"
 
+const defaultState = {
+  iconName: "question",
+  categoryName: "Select Category",
+  amount: 0,
+  description: "",
+  time: new Date()
+}
 export default class AddTransactionsScreen extends Component {
   static navigationOptions = {
     header: null
@@ -17,17 +24,12 @@ export default class AddTransactionsScreen extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      iconName: "question",
-      categoryName: "Select Category",
-      amount: 0,
-      description: "",
-      time: new Date()
-    }
+    this.state = {}
   }
 
+  componentWillMount = () => this.setState(defaultState)
+
   render() {
-    let me = this
     return (
       <View style={styles.addTransactionsComponent}>
         <View style={styles.amountContainer}>
@@ -67,6 +69,7 @@ export default class AddTransactionsScreen extends Component {
             <TextInput
               style={[styles.borderBottomLabel]}
               multiline={true}
+              value={this.state.description}
               onChangeText={text => this.setState({ description: text })}
             />
           </View>
@@ -100,8 +103,18 @@ export default class AddTransactionsScreen extends Component {
       chooseCategory: this.chooseCategory.bind(this)
     })
   }
-  onPressSave = () => {
+  onPressSave = async () => {
     let { amount, categoryName, description, time } = this.state
+    let { total } = this.props
+    await this.props.onAddTransaction({
+      amount,
+      categoryName,
+      description,
+      time,
+      total
+    })
+    await this.setState(defaultState)
+    await this.props.onFetchAll()
   }
 }
 

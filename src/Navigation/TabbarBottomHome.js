@@ -1,6 +1,7 @@
 import React from "react"
 import { TouchableOpacity, Text, AsyncStorage, ScrollView } from "react-native"
 import AddTransactionsScreen from "../TransactionsScreen/AddTransactionsScreen"
+import TransactionContainer from "../containers/TransactionContainer"
 import HistoryScreen from "../HistoryScreen/HistoryScreen"
 import HistoryContainer from "../containers/HistoryContainer"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
@@ -33,7 +34,7 @@ const HistoryScreen_StackNavigator = createStackNavigator({
 })
 const AddTransactionsScreen_StackNavigator = createStackNavigator({
   AddTransactionsScreen: {
-    screen: AddTransactionsScreen
+    screen: TransactionContainer
   },
   CategoryScreen: {
     screen: CategoryContainer,

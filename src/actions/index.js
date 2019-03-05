@@ -16,7 +16,10 @@ import {
   FETCH_WALLET_USER_FAILED,
   FETCH_HISTORY_USER,
   FETCH_HISTORY_USER_SUCCESS,
-  FETCH_HISTORY_USER_FAILED
+  FETCH_HISTORY_USER_FAILED,
+  ADD_TRANSACTION,
+  ADD_TRANSACTION_SUCCESS,
+  ADD_TRANSACTION_FAILED
 } from "./actionTypes"
 
 export const fetchCategoryAction = () => {
@@ -104,5 +107,20 @@ export const fetchHistoryUserSuccessAction = payload => ({
 
 export const fetchHistoryUserFailedAction = error => ({
   type: FETCH_HISTORY_USER_FAILED,
+  error
+})
+
+export const addTransactionAction = payload => ({
+  type: ADD_TRANSACTION,
+  payload
+})
+
+export const addTransactionSuccessAction = payload => ({
+  type: ADD_TRANSACTION_SUCCESS,
+  payload
+})
+
+export const addTransactionFailedAction = error => ({
+  type: ADD_TRANSACTION_FAILED,
   error
 })

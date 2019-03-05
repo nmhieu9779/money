@@ -49,7 +49,8 @@ export default class HistoryScreen extends Component {
     )
   }
 
-  _keyExtractor = item => moment(new Date(item.time)).format()
+  _keyExtractor = (item, index) =>
+    moment(new Date(item.time)).format() + index.toString()
 }
 
 const styles = StyleSheet.create({

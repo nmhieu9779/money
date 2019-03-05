@@ -24,3 +24,7 @@ export const FETCH_WALLET_USER_FAILED = "fetch_wallet_user_failed"
 export const FETCH_HISTORY_USER = "fetch_history_user"
 export const FETCH_HISTORY_USER_SUCCESS = "fetch_history_user_success"
 export const FETCH_HISTORY_USER_FAILED = "fetch_history_user_failed"
+
+export const ADD_TRANSACTION = "add_transaction"
+export const ADD_TRANSACTION_SUCCESS = "add_transaction_success"
+export const ADD_TRANSACTION_FAILED = "add_transaction_failed"

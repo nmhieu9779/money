@@ -135,11 +135,39 @@ function* fetchHistoryUser(uid) {
   return data
 }
 
+function* addTransaction(data) {
+  dataNew = {
+    data: firebase.firestore.FieldValue.arrayUnion({
+      amount: data.amount,
+      description: data.description,
+      time: data.time.toString(),
+      work: data.categoryName
+    })
+  }
+  let newTotal = data.total - data.amount
+  firebase
+    .firestore()
+    .collection("history")
+    .doc("30Zhx7sy1bfvX8EPxiLwJHK0fjj2")
+    .update(dataNew)
+    .then()
+    .catch()
+  firebase
+    .firestore()
+    .collection("wallet")
+    .doc("30Zhx7sy1bfvX8EPxiLwJHK0fjj2")
+    .update({ total: newTotal })
+    .then()
+    .catch()
+  return data
+}
+
 export const Api = {
   getCategoryFromFireBase,
   addCategory,
   editCategory,
   deleteCategory,
   fetchWalletUser,
-  fetchHistoryUser
+  fetchHistoryUser,
+  addTransaction
 }
