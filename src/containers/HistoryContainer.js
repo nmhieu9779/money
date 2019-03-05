@@ -3,7 +3,6 @@ import HistoryScreen from "../HistoryScreen/HistoryScreen"
 import { fetchHistoryUserAction } from "../actions"
 
 const mapStateToProps = state => {
-  console.log(state)
   return state.historyReducers
 }
 

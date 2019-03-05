@@ -4,55 +4,12 @@ import AddTransactionsScreen from "../TransactionsScreen/AddTransactionsScreen"
 import HistoryScreen from "../HistoryScreen/HistoryScreen"
 import HistoryContainer from "../containers/HistoryContainer"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
-
+import CategoryContainer from "../containers/CategoryContainer"
 import {
   createBottomTabNavigator,
   createStackNavigator,
-  createAppContainer,
-  createDrawerNavigator,
-  withNavigationFocus,
-  createSwitchNavigator
+  createAppContainer
 } from "react-navigation"
-
-import Icon from "react-native-vector-icons/FontAwesome"
-
-function NavigationDrawerStructure(props) {
-  toggleDrawer = () => {
-    props.navigationProps.toggleDrawer()
-  }
-  return (
-    <Icon
-      style={styles.iconLeft}
-      name="bars"
-      color="white"
-      size={30}
-      onPress={this.toggleDrawer.bind(this)}
-    />
-  )
-}
-
-function ItemMenu(props) {
-  return (
-    <TouchableOpacity onPress={props.onPress} style={{ flexDirection: "row" }}>
-      <Icon
-        style={{ padding: 10, width: 60 }}
-        name={props.iconName}
-        color="#203546"
-        size={30}
-      />
-      <Text
-        style={{
-          fontSize: 18,
-          fontWeight: "bold",
-          textAlignVertical: "center",
-          color: "#203546"
-        }}
-      >
-        {props.textName}
-      </Text>
-    </TouchableOpacity>
-  )
-}
 
 const styles = {
   iconLeft: { padding: 10, width: 60 },
@@ -77,6 +34,15 @@ const HistoryScreen_StackNavigator = createStackNavigator({
 const AddTransactionsScreen_StackNavigator = createStackNavigator({
   AddTransactionsScreen: {
     screen: AddTransactionsScreen
+  },
+  CategoryScreen: {
+    screen: CategoryContainer,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: { ...styles.headerStyle },
+      headerTintColor: "white",
+      headerTitle: "Select category",
+      headerTitleStyle: [{ ...styles.headerTitleStyle, paddingRight: 0 }]
+    })
   }
 })
 

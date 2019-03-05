@@ -65,6 +65,12 @@ export default class CategoryScreen extends Component {
         key={item.icon}
         activeOpacity={1}
         style={styles.headerCollapseContainer}
+        onPress={() => {
+          const { params } = this.props.navigation.state
+          const { goBack } = this.props.navigation
+          goBack()
+          params.chooseCategory(item)
+        }}
       >
         <View style={styles.iconHeaderContainer}>
           <FontAwesome5 size={20} name={item.icon} />
@@ -263,6 +269,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: "100%",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    zIndex: 1
   }
 })

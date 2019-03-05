@@ -111,16 +111,6 @@ const HomeScreen_StackNavigator = createStackNavigator({
       headerTitle: "Home",
       headerTitleStyle: { ...styles.headerTitleStyle }
     })
-  },
-  CategoryScreen: {
-    screen: CategoryContainer,
-    navigationOptions: ({ navigation }) => ({
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
-      headerStyle: { ...styles.headerStyle },
-      headerTintColor: "white",
-      headerTitle: "Select category",
-      headerTitleStyle: [{ ...styles.headerTitleStyle, paddingRight: 0 }]
-    })
   }
 })
 

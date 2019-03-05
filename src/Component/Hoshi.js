@@ -34,7 +34,10 @@ export default class Hoshi extends BaseInput {
       maskColor,
       borderColor,
       height: inputHeight,
-      secureTextEntry
+      secureTextEntry,
+      keyboardType,
+      textAlign,
+      paddingProps
     } = this.props
     const { width, focusedAnim, value } = this.state
     const flatStyles = StyleSheet.flatten(containerStyle) || {}
@@ -61,7 +64,8 @@ export default class Hoshi extends BaseInput {
             {
               width,
               height: inputHeight
-            }
+            },
+            { textAlign: textAlign, left: paddingProps }
           ]}
           value={value}
           onBlur={this._onBlur}
@@ -70,6 +74,7 @@ export default class Hoshi extends BaseInput {
           underlineColorAndroid={"transparent"}
           secureTextEntry={secureTextEntry}
           caretHidden={true}
+          keyboardType={keyboardType}
         />
         <TouchableWithoutFeedback onPress={this.focus}>
           <Animated.View
@@ -127,7 +132,6 @@ const styles = StyleSheet.create({
   textInput: {
     position: "absolute",
     bottom: 2,
-    left: PADDING,
     padding: 0,
     color: "#6a7989",
     fontSize: 18,

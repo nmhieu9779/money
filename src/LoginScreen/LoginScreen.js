@@ -36,12 +36,14 @@ export default class LoginScreen extends Component {
             label={"Email"}
             onChangeText={email => this.setState({ email: email })}
             value={email}
+            paddingProps={16}
           />
           <Hoshi
             label={"Password"}
             secureTextEntry={true}
             onChangeText={password => this.setState({ password: password })}
             value={password}
+            paddingProps={16}
           />
           <View style={styles.fgpwContainer}>
             <TouchableOpacity>
