@@ -148,14 +148,14 @@ function* addTransaction(data) {
   firebase
     .firestore()
     .collection("history")
-    .doc("30Zhx7sy1bfvX8EPxiLwJHK0fjj2")
+    .doc(data.uid)
     .update(dataNew)
     .then()
     .catch()
   firebase
     .firestore()
     .collection("wallet")
-    .doc("30Zhx7sy1bfvX8EPxiLwJHK0fjj2")
+    .doc(data.uid)
     .update({ total: newTotal })
     .then()
     .catch()

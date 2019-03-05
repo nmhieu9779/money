@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { View, StyleSheet, FlatList, Text } from "react-native"
+import { View, StyleSheet, FlatList, Text, AsyncStorage } from "react-native"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import moment from "moment"
 
@@ -14,7 +14,13 @@ export default class HistoryScreen extends Component {
   }
 
   componentDidMount = () => {
-    this.props.onFetchHistory("30Zhx7sy1bfvX8EPxiLwJHK0fjj2")
+    this.onFetchHistory()
+  }
+
+  onFetchHistory = async () => {
+    const uid = await AsyncStorage.getItem("uid")
+    this.setState({ uid: uid })
+    this.props.onFetchHistory(uid)
   }
 
   render() {

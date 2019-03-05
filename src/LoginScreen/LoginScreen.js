@@ -133,7 +133,7 @@ export default class LoginScreen extends Component {
 
   _loginAsync = async uid => {
     await AsyncStorage.setItem("uid", uid)
-    this.props.navigation.navigate("drawerStack")
+    await this.props.navigation.navigate("HomeScreen", { uid: uid })
   }
 
   showMessageBox = () =>

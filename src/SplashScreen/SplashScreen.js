@@ -16,17 +16,7 @@ export default class SplashScreen extends Component {
   _bootstrapAsync = async () => {
     const uid = await AsyncStorage.getItem("uid")
     if (uid) {
-      var data = {}
-      await firebase
-        .firestore()
-        .collection("user")
-        .doc(uid)
-        .get()
-        .then(function(querySnapshot) {
-          data = querySnapshot.data()
-        })
-        .catch(error => console.log(error))
-      await this.props.navigation.navigate("HomeScreen", { data, uid: uid })
+      this.props.navigation.navigate("HomeScreen", { uid: uid })
     } else {
       this.props.navigation.navigate("loginStack")
     }
@@ -45,7 +35,7 @@ export default class SplashScreen extends Component {
       duration: 10000
     }).start()
 
-    this._bootstrapAsync()
+    setTimeout(() => this._bootstrapAsync(), 3500)
   }
 
   render() {

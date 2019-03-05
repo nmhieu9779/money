@@ -4,7 +4,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from "react-native"
 import Hoshi from "../Component/Hoshi"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
@@ -27,9 +28,21 @@ export default class AddTransactionsScreen extends Component {
     this.state = {}
   }
 
-  componentWillMount = () => this.setState(defaultState)
+  componentWillMount = () => {
+    return this.setState(defaultState)
+  }
+
+  componentDidMount = () => {
+    this.getUid()
+  }
+
+  getUid = async () => {
+    const uid = await AsyncStorage.getItem("uid")
+    this.setState({ uid: uid })
+  }
 
   render() {
+    console.log(this.state)
     return (
       <View style={styles.addTransactionsComponent}>
         <View style={styles.amountContainer}>
@@ -104,17 +117,18 @@ export default class AddTransactionsScreen extends Component {
     })
   }
   onPressSave = async () => {
-    let { amount, categoryName, description, time } = this.state
+    let { amount, categoryName, description, time, uid } = this.state
     let { total } = this.props
     await this.props.onAddTransaction({
       amount,
       categoryName,
       description,
       time,
-      total
+      total,
+      uid
     })
     await this.setState(defaultState)
-    await this.props.onFetchAll()
+    await this.props.onFetchAll(uid)
   }
 }
 

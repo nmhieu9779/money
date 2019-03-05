@@ -18,26 +18,6 @@ export default class HomeScreen extends Component {
     this.props.onFetchWalletUser(this.state.uid)
   }
 
-  getDataFromSeverWithUid = () => {
-    this.setState({ showHud: true })
-    let me = this
-    let { uid } = this.state
-    firebase
-      .firestore()
-      .collection("user")
-      .doc(uid)
-      .get()
-      .then(function(querySnapshot) {
-        me.setState(querySnapshot.data())
-      })
-      .finally(() =>
-        setTimeout(() => {
-          this.setState({ showHud: false })
-        }, 1000)
-      )
-      .catch(error => console.log(error))
-  }
-
   render() {
     return (
       <View style={styles.homeContainer}>

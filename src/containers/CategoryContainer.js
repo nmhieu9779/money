@@ -3,17 +3,9 @@ import CategoryScreen from "../CategoryScreen/CategoryScreen"
 
 import {
   fetchCategoryAction,
-  fetchCategorySuccessAction,
-  fetchCategoryFailedAction,
   addCategoryAction,
-  addCategorySuccessAction,
-  addCategoryFailedAction,
   editCategoryAction,
-  editCategorySuccessAction,
-  editCategoryFailedAction,
-  deleteCategoryAction,
-  deleteCategorySuccessAction,
-  deleteCategoryFailedAction
+  deleteCategoryAction
 } from "../actions"
 
 const mapStateToProps = state => {

@@ -13,9 +13,9 @@ const mapDispatchToProps = dispatch => {
     onAddTransaction: data => {
       dispatch(addTransactionAction(data))
     },
-    onFetchAll: () => {
-      dispatch(fetchHistoryUserAction("30Zhx7sy1bfvX8EPxiLwJHK0fjj2"))
-      dispatch(fetchWalletUserAction("30Zhx7sy1bfvX8EPxiLwJHK0fjj2"))
+    onFetchAll: uid => {
+      dispatch(fetchHistoryUserAction(uid))
+      dispatch(fetchWalletUserAction(uid))
     }
   }
 }
