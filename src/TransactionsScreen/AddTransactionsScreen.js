@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
-  AsyncStorage
+  AsyncStorage,
+  Picker
 } from "react-native"
 import Hoshi from "../Component/Hoshi"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
@@ -16,7 +17,8 @@ const defaultState = {
   categoryName: "Select Category",
   amount: 0,
   description: "",
-  time: new Date()
+  time: new Date(),
+  status: "expense"
 }
 export default class AddTransactionsScreen extends Component {
   static navigationOptions = {
@@ -98,6 +100,23 @@ export default class AddTransactionsScreen extends Component {
               {moment(this.state.time).format("LLL")}
             </Text>
           </View>
+          <View style={styles.itemContainer}>
+            <View style={styles.iconContainer}>
+              <FontAwesome5 size={20} name={this.getIconStatus()} />
+            </View>
+            <Picker
+              style={[styles.borderBottomLabel, { width: "100%" }]}
+              selectedValue={this.state.status}
+              style={{ height: 50, width: 100 }}
+              onValueChange={(itemValue, itemIndex) =>
+                this.setState({ status: itemValue })
+              }
+              mode={"dropdown"}
+            >
+              <Picker.Item label="Expense" value="expense" color="red" />
+              <Picker.Item label="InCome" value="inCome" color="blue" />
+            </Picker>
+          </View>
         </View>
         <TouchableOpacity
           onPress={this.onPressSave.bind(this)}
@@ -108,6 +127,7 @@ export default class AddTransactionsScreen extends Component {
       </View>
     )
   }
+  getIconStatus = () => (this.state.status === "expense" ? "minus" : "plus")
   chooseCategory = item => {
     this.setState({ iconName: item.icon, categoryName: item.name })
   }
@@ -117,18 +137,23 @@ export default class AddTransactionsScreen extends Component {
     })
   }
   onPressSave = async () => {
-    let { amount, categoryName, description, time, uid } = this.state
+    let { amount, categoryName, description, time, status, uid } = this.state
     let { total } = this.props
-    await this.props.onAddTransaction({
-      amount,
-      categoryName,
-      description,
-      time,
-      total,
-      uid
-    })
-    await this.setState(defaultState)
-    await this.props.onFetchAll(uid)
+    if (!!amount && categoryName != "Select Category") {
+      await this.props.onAddTransaction({
+        amount,
+        categoryName,
+        description,
+        time,
+        total,
+        status,
+        uid
+      })
+      await this.setState(defaultState)
+      await this.props.onFetchAll(uid)
+    } else {
+      alert("Please Try Again")
+    }
   }
 }
 

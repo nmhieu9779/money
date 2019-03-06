@@ -35,12 +35,14 @@ export default class HistoryScreen extends Component {
   }
 
   _renderItem = ({ item }) => {
+    let me = this
+    let color = me.getColorStatus(item.status)
     return (
       <View style={styles.itemContainer}>
         <View style={styles.titleItemContainer}>
           <Text style={styles.titleItem}>{item.work}</Text>
-          <View style={styles.amountContainer}>
-            <Text style={styles.amount}>{item.amount}</Text>
+          <View style={[styles.amountContainer, { borderColor: color }]}>
+            <Text style={[styles.amount, { color: color }]}>{item.amount}</Text>
           </View>
         </View>
         <View style={styles.itemLabel}>
@@ -54,6 +56,8 @@ export default class HistoryScreen extends Component {
       </View>
     )
   }
+
+  getColorStatus = status => (status === "expense" ? "red" : "blue")
 
   _keyExtractor = (item, index) =>
     moment(new Date(item.time)).format() + index.toString()
@@ -83,12 +87,9 @@ const styles = StyleSheet.create({
   amountContainer: {
     borderRadius: 5,
     borderWidth: 0.5,
-    borderColor: "#ff0000",
     padding: 5
   },
-  amount: {
-    color: "#ff0000"
-  },
+  amount: {},
   description: {
     fontStyle: "italic"
   },

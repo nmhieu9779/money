@@ -141,10 +141,13 @@ function* addTransaction(data) {
       amount: data.amount,
       description: data.description,
       time: data.time.toString(),
-      work: data.categoryName
+      work: data.categoryName,
+      status: data.status
     })
   }
-  let newTotal = data.total - data.amount
+  let total = parseFloat(data.total)
+  let amount = parseFloat(data.amount)
+  let newTotal = data.status === "expense" ? total - amount : total + amount
   firebase
     .firestore()
     .collection("history")
