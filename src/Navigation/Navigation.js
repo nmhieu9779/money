@@ -144,7 +144,7 @@ const LoginStack = createStackNavigator(
 const AppContainer = createAppContainer(
   createSwitchNavigator({
     authLoading: { screen: SplashScreen },
-    drawerStack: { screen: DrawerNavigation },
+    drawerStack: { screen: DrawerStack },
     loginStack: { screen: LoginStack }
   }),
   {

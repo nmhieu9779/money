@@ -105,12 +105,12 @@ export default class AddTransactionsScreen extends Component {
               <FontAwesome5 size={20} name={this.getIconStatus()} />
             </View>
             <Picker
-              style={[styles.borderBottomLabel, { width: "100%" }]}
               selectedValue={this.state.status}
               style={{ height: 50, width: 100 }}
               onValueChange={(itemValue, itemIndex) =>
                 this.setState({ status: itemValue })
               }
+              style={{ flex: 1 }}
               mode={"dropdown"}
             >
               <Picker.Item label="Expense" value="expense" color="red" />
