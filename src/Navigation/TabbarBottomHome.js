@@ -1,8 +1,6 @@
 import React from "react"
-import { TouchableOpacity, Text, AsyncStorage, ScrollView } from "react-native"
-import AddTransactionsScreen from "../TransactionsScreen/AddTransactionsScreen"
+import { Text, View, TouchableOpacity } from "react-native"
 import TransactionContainer from "../containers/TransactionContainer"
-import HistoryScreen from "../HistoryScreen/HistoryScreen"
 import HistoryContainer from "../containers/HistoryContainer"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import CategoryContainer from "../containers/CategoryContainer"
@@ -13,8 +11,6 @@ import {
 } from "react-navigation"
 
 const styles = {
-  iconLeft: { padding: 10, width: 60 },
-  btnCancel: { color: "white", fontSize: 15, paddingRight: 10, width: 60 },
   headerTitleStyle: {
     flex: 1,
     fontSize: 20,
@@ -24,7 +20,51 @@ const styles = {
   },
   headerStyle: {
     backgroundColor: "#329BFF"
-  }
+  },
+  tabBarMenuContainer: {
+    height: 50,
+    width: "100%",
+    backgroundColor: "#fff",
+    borderTopColor: "#ccc",
+    borderTopWidth: 0.5,
+    flexDirection: "row"
+  },
+  itemMenuContainer: { flex: 1, alignItems: "center", justifyContent: "center" }
+}
+
+function ItemMenu(props) {
+  return (
+    <TouchableOpacity style={styles.itemMenuContainer} onPress={props.onPress}>
+      <FontAwesome5 color={props.color} name={props.nameIcon} />
+      <Text style={{ color: props.color }}>{props.name}</Text>
+    </TouchableOpacity>
+  )
+}
+
+function tabBarMenu(props) {
+  onPressDashboard = () => props.navigation.navigate("HistoryScreen")
+  onPressAddTransactions = () =>
+    props.navigation.navigate("AddTransactionsScreen")
+
+  getColor = index =>
+    props.navigation.state.index === index ? "blue" : "black"
+
+  return (
+    <View style={styles.tabBarMenuContainer}>
+      <ItemMenu
+        color={this.getColor(0)}
+        nameIcon={"home"}
+        name={"Dashboard"}
+        onPress={this.onPressDashboard.bind(this)}
+      />
+      <ItemMenu
+        color={this.getColor(1)}
+        nameIcon={"plus"}
+        name={"Add"}
+        onPress={this.onPressAddTransactions.bind(this)}
+      />
+    </View>
+  )
 }
 
 const HistoryScreen_StackNavigator = createStackNavigator({
@@ -48,24 +88,17 @@ const AddTransactionsScreen_StackNavigator = createStackNavigator({
 })
 
 const BottomAppContainer = createAppContainer(
-  createBottomTabNavigator({
-    HistoryScreen: {
-      screen: HistoryScreen_StackNavigator
-    },
-    AddTransactionsScreen: { screen: AddTransactionsScreen_StackNavigator }
-  }),
-  {
-    initialRouteName: "HistoryScreen_StackNavigator",
-    tabBarOptions: {
-      activeTintColor: "#e91e63",
-      labelStyle: {
-        fontSize: 12
+  createBottomTabNavigator(
+    {
+      HistoryScreen: {
+        screen: HistoryScreen_StackNavigator
       },
-      style: {
-        backgroundColor: "blue"
-      }
+      AddTransactionsScreen: { screen: AddTransactionsScreen_StackNavigator }
+    },
+    {
+      tabBarComponent: tabBarMenu
     }
-  }
+  )
 )
 
 export default BottomAppContainer

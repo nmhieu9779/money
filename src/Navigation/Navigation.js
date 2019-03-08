@@ -39,7 +39,7 @@ function ItemMenu(props) {
       <Icon
         style={{ padding: 10, width: 60 }}
         name={props.iconName}
-        color="#203546"
+        color={props.color}
         size={30}
       />
       <Text
@@ -47,7 +47,7 @@ function ItemMenu(props) {
           fontSize: 18,
           fontWeight: "bold",
           textAlignVertical: "center",
-          color: "#203546"
+          color: props.color
         }}
       >
         {props.textName}
@@ -70,14 +70,19 @@ function DrawerMenu(props) {
     props.navigation.navigate("loginStack")
   }
 
+  getColor = index =>
+    props.navigation.state.index === index ? "blue" : "black"
+
   return (
     <ScrollView>
       <ItemMenu
+        color={this.getColor(0)}
         iconName={"home"}
         textName={"Home"}
         onPress={this.onPressHome.bind(this)}
       />
       <ItemMenu
+        color={this.getColor(1)}
         iconName={"sign-out"}
         textName={"Logout"}
         onPress={this.onPressLogout.bind(this)}
