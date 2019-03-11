@@ -181,9 +181,10 @@ function* getUserProfile(uid) {
 }
 
 function* setUserProfile(data) {
-  const url = yield uploadImageAsync(data.data.avatar)
-  yield (data.data.avatar = url)
-  yield console.log(data.data)
+  if (data.change) {
+    const url = yield uploadImageAsync(data.data.avatar)
+    yield (data.data.avatar = url)
+  }
   yield firebase
     .firestore()
     .collection("profile")

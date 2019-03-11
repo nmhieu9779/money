@@ -70,7 +70,7 @@ export default class UserProfileScreen extends Component {
   }
 
   componentWillMount = () => {
-    this.setState({ data: defaultState })
+    this.setState({ data: defaultState, change: false })
     this.getData()
   }
 
@@ -187,9 +187,9 @@ export default class UserProfileScreen extends Component {
     )
   }
   setDataItem = item => this.setState({ data: { ...this.state.data, ...item } })
-  onPressUpdate = () => {
-    console.log(this.state)
-    this.props.onSetUserProfile(this.state)
+  onPressUpdate = async () => {
+    await this.props.onSetUserProfile(this.state)
+    await this.setState({ change: false })
   }
   onPressChooseDOB = () => {
     this.renderDatePicker()
@@ -222,7 +222,10 @@ export default class UserProfileScreen extends Component {
   }
 
   handleResponse = async response => {
-    this.setState({ data: { ...this.state.data, avatar: response.uri } })
+    this.setState({
+      data: { ...this.state.data, avatar: response.uri },
+      change: true
+    })
   }
 }
 
