@@ -4,8 +4,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from "react-native"
+import firebase from "../../Firebase"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import { ScrollView } from "react-native-gesture-handler"
 
@@ -17,6 +19,8 @@ function Item(props) {
         style={styles.itemInput}
         value={props.value}
         multiline={props.multiline}
+        onChangeText={props.onChangeText}
+        keyboardType={props.keyboardType}
       />
     </View>
   )
@@ -45,59 +49,118 @@ function ItemSex(props) {
   )
 }
 
+defaultState = {
+  nameDisplay: "",
+  tel: "",
+  dob: "",
+  address: "",
+  occupations: "",
+  sex: "Male"
+}
+
 export default class UserProfileScreen extends Component {
   constructor(props) {
     super(props)
-    this.state = { sex: "Nam" }
+    this.state = {}
   }
 
-  componentWillMount = () => {}
+  componentWillMount = () => {
+    this.setState({ data: defaultState })
+  }
 
-  componentDidMount = () => {}
+  componentDidMount = () => {
+    this.getData()
+  }
+
+  getData = async () => {
+    let me = this
+    const uid = await AsyncStorage.getItem("uid")
+    await this.setState({ uid: uid })
+    await firebase
+      .firestore()
+      .collection("profile")
+      .doc(this.state.uid)
+      .get()
+      .then(function(querySnapshot) {
+        me.setState({ data: querySnapshot.data() })
+      })
+      .catch(error => console.log(error))
+  }
 
   render() {
+    let state = this.state.data
+    console.log(this.state)
     return (
       <ScrollView style={styles.profileContainer}>
         <View style={styles.infoContainer}>
           <TouchableOpacity style={styles.btnImage}>
             <FontAwesome5 size={60} color={"white"} name={"user"} />
           </TouchableOpacity>
-          <Text style={styles.name}>{"Nguyen Minh Hieu"}</Text>
+          <Text style={styles.name}>{state.nameDisplay}</Text>
         </View>
-        <Item label={"Name display"} value={"Nguyen Minh Hieu"} />
-        <Item label={"Tel"} value={"0706216519"} />
-        <Item label={"DOB"} value={"25/09/1997"} />
+        <Item
+          label={"Name display"}
+          value={state.nameDisplay}
+          onChangeText={text => this.setDataItem({ nameDisplay: text })}
+        />
+        <Item
+          label={"Tel"}
+          value={state.tel}
+          onChangeText={text => this.setDataItem({ tel: text })}
+          keyboardType={"numeric"}
+        />
+        <Item
+          label={"DOB"}
+          value={state.dob}
+          onChangeText={text => this.setDataItem({ dob: text })}
+        />
         <Item
           label={"Address"}
-          value={
-            "226, duong 48, khu pho 6, phuong Hiep Binh Chanh, quan Thu Duc, TP HCM"
-          }
+          value={state.address}
+          onChangeText={text => this.setDataItem({ address: text })}
           multiline={true}
         />
-        <Item label={"Occupations"} value={"Developer"} />
+        <Item
+          label={"Occupations"}
+          value={state.occupations}
+          onChangeText={text => this.setDataItem({ occupations: text })}
+        />
 
         <View style={styles.sexContainer}>
           <ItemSex
-            label={"Nam"}
-            sex={this.state.sex}
+            label={"Male"}
+            sex={state.sex}
             borderBottomLeftRadius={5}
             borderTopLeftRadius={5}
+            onPress={() =>
+              this.setState({ data: { ...this.state.data, sex: "Male" } })
+            }
           />
-          <ItemSex label={"Nu"} sex={this.state.sex} />
           <ItemSex
-            label={"Khac"}
-            sex={this.state.sex}
+            label={"Female"}
+            sex={state.sex}
+            onPress={() =>
+              this.setState({ data: { ...this.state.data, sex: "Female" } })
+            }
+          />
+          <ItemSex
+            label={"Other"}
+            sex={state.sex}
             borderBottomRightRadius={5}
             borderTopRightRadius={5}
+            onPress={() =>
+              this.setState({ data: { ...this.state.data, sex: "Other" } })
+            }
           />
         </View>
-
         <TouchableOpacity style={styles.updateContainer}>
           <Text style={styles.updateLabel}>UPDATE</Text>
         </TouchableOpacity>
       </ScrollView>
     )
   }
+
+  setDataItem = item => this.setState({ data: { ...this.state.data, ...item } })
 }
 
 const styles = StyleSheet.create({
