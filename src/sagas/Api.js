@@ -165,6 +165,31 @@ function* addTransaction(data) {
   return data
 }
 
+function* getUserProfile(uid) {
+  let data = {}
+  yield firebase
+    .firestore()
+    .collection("profile")
+    .doc(uid)
+    .get()
+    .then(function(querySnapshot) {
+      data = querySnapshot.data()
+    })
+    .catch(error => console.log(error))
+  return data
+}
+
+function* setUserProfile(data) {
+  yield firebase
+    .firestore()
+    .collection("profile")
+    .doc(data.uid)
+    .set(data.data)
+    .then()
+    .catch()
+  return data.data
+}
+
 export const Api = {
   getCategoryFromFireBase,
   addCategory,
@@ -172,5 +197,7 @@ export const Api = {
   deleteCategory,
   fetchWalletUser,
   fetchHistoryUser,
-  addTransaction
+  addTransaction,
+  getUserProfile,
+  setUserProfile
 }

@@ -19,7 +19,13 @@ import {
   FETCH_HISTORY_USER_FAILED,
   ADD_TRANSACTION,
   ADD_TRANSACTION_SUCCESS,
-  ADD_TRANSACTION_FAILED
+  ADD_TRANSACTION_FAILED,
+  GET_USER_PROFILE,
+  GET_USER_PROFILE_SUCCESS,
+  GET_USER_PROFILE_FAILED,
+  SET_USER_PROFILE,
+  SET_USER_PROFILE_SUCCESS,
+  SET_USER_PROFILE_FAILED
 } from "./actionTypes"
 
 export const fetchCategoryAction = () => {
@@ -122,5 +128,35 @@ export const addTransactionSuccessAction = payload => ({
 
 export const addTransactionFailedAction = error => ({
   type: ADD_TRANSACTION_FAILED,
+  error
+})
+
+export const getUserProfileAction = payload => ({
+  type: GET_USER_PROFILE,
+  payload
+})
+
+export const getUserProfileSuccessAction = payload => ({
+  type: GET_USER_PROFILE_SUCCESS,
+  payload
+})
+
+export const getUserProfileFailedAction = error => ({
+  type: GET_USER_PROFILE_FAILED,
+  error
+})
+
+export const setUserProfileAction = payload => ({
+  type: SET_USER_PROFILE,
+  payload
+})
+
+export const setUserProfileSuccessAction = payload => ({
+  type: SET_USER_PROFILE_SUCCESS,
+  payload
+})
+
+export const setUserProfileFailedAction = error => ({
+  type: SET_USER_PROFILE_FAILED,
   error
 })

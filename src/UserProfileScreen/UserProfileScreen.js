@@ -66,30 +66,24 @@ export default class UserProfileScreen extends Component {
 
   componentWillMount = () => {
     this.setState({ data: defaultState })
-  }
-
-  componentDidMount = () => {
     this.getData()
   }
 
+  componentDidMount = () => {}
+
   getData = async () => {
-    let me = this
     const uid = await AsyncStorage.getItem("uid")
     await this.setState({ uid: uid })
-    await firebase
-      .firestore()
-      .collection("profile")
-      .doc(this.state.uid)
-      .get()
-      .then(function(querySnapshot) {
-        me.setState({ data: querySnapshot.data() })
-      })
-      .catch(error => console.log(error))
+    await this.props.onGetUserProfile(uid)
+  }
+  componentDidUpdate = prevProps => {
+    if (prevProps.data != this.props.data) {
+      this.setState({ data: this.props.data })
+    }
   }
 
   render() {
     let state = this.state.data
-    console.log(this.state)
     return (
       <ScrollView style={styles.profileContainer}>
         <View style={styles.infoContainer}>
@@ -153,14 +147,19 @@ export default class UserProfileScreen extends Component {
             }
           />
         </View>
-        <TouchableOpacity style={styles.updateContainer}>
+        <TouchableOpacity
+          style={styles.updateContainer}
+          onPress={this.onPressUpdate.bind(this)}
+        >
           <Text style={styles.updateLabel}>UPDATE</Text>
         </TouchableOpacity>
       </ScrollView>
     )
   }
-
   setDataItem = item => this.setState({ data: { ...this.state.data, ...item } })
+  onPressUpdate = () => {
+    this.props.onSetUserProfile(this.state)
+  }
 }
 
 const styles = StyleSheet.create({

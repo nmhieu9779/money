@@ -28,3 +28,11 @@ export const FETCH_HISTORY_USER_FAILED = "fetch_history_user_failed"
 export const ADD_TRANSACTION = "add_transaction"
 export const ADD_TRANSACTION_SUCCESS = "add_transaction_success"
 export const ADD_TRANSACTION_FAILED = "add_transaction_failed"
+
+export const GET_USER_PROFILE = "get_user_profile"
+export const GET_USER_PROFILE_SUCCESS = "get_user_profile_success"
+export const GET_USER_PROFILE_FAILED = "get_user_profile_failed"
+
+export const SET_USER_PROFILE = "set_user_profile"
+export const SET_USER_PROFILE_SUCCESS = "set_user_profile_success"
+export const SET_USER_PROFILE_FAILED = "set_user_profile_failed"

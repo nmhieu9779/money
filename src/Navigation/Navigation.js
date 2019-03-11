@@ -14,6 +14,7 @@ import RegistrationScreen from "../RegistrationScreen/RegistrationScreen"
 import CategoryContainer from "../containers/CategoryContainer"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import UserProfileScreen from "../UserProfileScreen/UserProfileScreen"
+import UserProfileContainer from "../containers/UserProfileContainer"
 import {
   createStackNavigator,
   createAppContainer,
@@ -195,7 +196,7 @@ const HomeScreen_StackNavigator = createStackNavigator({
 
 const UserProfileScreen_StackNavigator = createStackNavigator({
   UserProfile: {
-    screen: UserProfileScreen,
+    screen: UserProfileContainer,
     navigationOptions: ({ navigation }) => ({
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: { ...styles.headerStyle },

@@ -3,12 +3,14 @@ import categoryReducers from "./categoryReducers"
 import homeReducers from "./homeReducers"
 import historyReducers from "./historyReducers"
 import transactionReducers from "./transactionReducers"
+import userProfileReducers from "./userProfileReducers"
 
 const allReducers = combineReducers({
   categoryReducers,
   homeReducers,
   historyReducers,
-  transactionReducers
+  transactionReducers,
+  userProfileReducers
 })
 
 export default allReducers
