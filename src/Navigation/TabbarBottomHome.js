@@ -59,8 +59,8 @@ function tabBarMenu(props) {
       />
       <ItemMenu
         color={this.getColor(1)}
-        nameIcon={"plus"}
-        name={"Add"}
+        nameIcon={"dollar-sign"}
+        name={"Transactions"}
         onPress={this.onPressAddTransactions.bind(this)}
       />
     </View>
