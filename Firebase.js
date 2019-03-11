@@ -2,6 +2,7 @@
 import firebase from "@firebase/app"
 import "@firebase/auth"
 import "@firebase/database"
+import "@firebase/storage"
 import firestore from "firebase/firestore"
 
 var config = {

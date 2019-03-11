@@ -9,6 +9,7 @@ import {
   ADD_CATEGORY_SUCCESS,
   ADD_CATEGORY_FAILED
 } from "../actions/actionTypes"
+import uuid from "uuid"
 
 function* getCategoryFromFireBase() {
   var data = {}
@@ -180,14 +181,40 @@ function* getUserProfile(uid) {
 }
 
 function* setUserProfile(data) {
+  const url = yield uploadImageAsync(data.data.avatar)
+  yield (data.data.avatar = url)
+  yield console.log(data.data)
   yield firebase
     .firestore()
     .collection("profile")
     .doc(data.uid)
     .set(data.data)
     .then()
-    .catch()
+    .catch(error => {})
   return data.data
+}
+
+function* uploadImageAsync(uri) {
+  const blob = yield new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.onload = function() {
+      resolve(xhr.response)
+    }
+    xhr.onerror = function(e) {
+      console.log(e)
+      reject(new TypeError("Network request failed"))
+    }
+    xhr.responseType = "blob"
+    xhr.open("GET", uri, true)
+    xhr.send(null)
+  })
+  const ref = firebase
+    .storage()
+    .ref()
+    .child(uuid.v4())
+  const snapshot = yield ref.put(blob)
+  blob.close()
+  return yield snapshot.ref.getDownloadURL()
 }
 
 export const Api = {

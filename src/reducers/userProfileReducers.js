@@ -15,7 +15,8 @@ initStateUserProfile = {
     dob: "",
     address: "",
     occupations: "",
-    sex: "Male"
+    sex: "Male",
+    avatar: ""
   }
 }
 

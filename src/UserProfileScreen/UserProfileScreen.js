@@ -5,11 +5,15 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
-  AsyncStorage
+  AsyncStorage,
+  DatePickerAndroid,
+  ScrollView,
+  Image
 } from "react-native"
 import firebase from "../../Firebase"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
-import { ScrollView } from "react-native-gesture-handler"
+import ImagePicker from "react-native-image-picker"
+import uuid from "uuid"
 
 function Item(props) {
   return (
@@ -55,7 +59,8 @@ defaultState = {
   dob: "",
   address: "",
   occupations: "",
-  sex: "Male"
+  sex: "Male",
+  avatar: ""
 }
 
 export default class UserProfileScreen extends Component {
@@ -82,13 +87,34 @@ export default class UserProfileScreen extends Component {
     }
   }
 
+  async renderDatePicker() {
+    const { action, year, month, day } = await DatePickerAndroid.open({
+      date: new Date()
+    })
+    if (action === DatePickerAndroid.dateSetAction) {
+      if (month < 9) {
+        this.setState({
+          data: { ...this.state.data, dob: `${day}/0${month + 1}/${year}` }
+        })
+      } else {
+        this.setState({
+          data: { ...this.state.data, dob: `${day}/${month + 1}/${year}` }
+        })
+      }
+    }
+  }
+
   render() {
     let state = this.state.data
+    console.log(this.props)
     return (
       <ScrollView style={styles.profileContainer}>
         <View style={styles.infoContainer}>
-          <TouchableOpacity style={styles.btnImage}>
-            <FontAwesome5 size={60} color={"white"} name={"user"} />
+          <TouchableOpacity
+            style={styles.btnImage}
+            onPress={this.selectPhotoTapped.bind(this)}
+          >
+            {this.getAvatar()}
           </TouchableOpacity>
           <Text style={styles.name}>{state.nameDisplay}</Text>
         </View>
@@ -103,11 +129,15 @@ export default class UserProfileScreen extends Component {
           onChangeText={text => this.setDataItem({ tel: text })}
           keyboardType={"numeric"}
         />
-        <Item
-          label={"DOB"}
-          value={state.dob}
-          onChangeText={text => this.setDataItem({ dob: text })}
-        />
+        <View style={styles.itemContainer}>
+          <Text>{"DOB"}</Text>
+          <Text
+            style={[styles.itemInput, { color: "black" }]}
+            onPress={this.onPressChooseDOB.bind(this)}
+          >
+            {state.dob}
+          </Text>
+        </View>
         <Item
           label={"Address"}
           value={state.address}
@@ -158,7 +188,43 @@ export default class UserProfileScreen extends Component {
   }
   setDataItem = item => this.setState({ data: { ...this.state.data, ...item } })
   onPressUpdate = () => {
+    console.log(this.state)
     this.props.onSetUserProfile(this.state)
+  }
+  onPressChooseDOB = () => {
+    this.renderDatePicker()
+  }
+  getAvatar = () => {
+    if (!!this.state.data.avatar) {
+      let uri = this.state.data.avatar
+      return <Image style={styles.avatar} source={{ uri: uri }} />
+    } else {
+      return <FontAwesome5 size={60} color={"white"} name={"user"} />
+    }
+  }
+  selectPhotoTapped() {
+    let me = this
+    const options = {
+      title: "Select Avatar"
+    }
+
+    ImagePicker.showImagePicker(options, response => {
+      if (response.didCancel) {
+        console.log("User cancelled photo picker")
+      } else if (response.error) {
+        console.log("ImagePicker Error: ", response.error)
+      } else if (response.customButton) {
+        console.log("User tapped custom button: ", response.customButton)
+      } else {
+        me.handleResponse(response)
+      }
+    })
+  }
+
+  handleResponse = async response => {
+    console.log(response)
+    console.log(uuid.v4())
+    this.setState({ data: { ...this.state.data, avatar: response.uri } })
   }
 }
 
@@ -210,5 +276,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#329BFF"
   },
-  updateLabel: { color: "white", fontSize: 20 }
+  updateLabel: { color: "white", fontSize: 20 },
+  avatar: { width: "100%", height: "100%", borderRadius: 999 }
 })
