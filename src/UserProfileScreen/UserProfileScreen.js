@@ -13,7 +13,7 @@ import {
 import firebase from "../../Firebase"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import ImagePicker from "react-native-image-picker"
-import uuid from "uuid"
+import Spinner from "../Component/LoadingHud"
 
 function Item(props) {
   return (
@@ -70,7 +70,7 @@ export default class UserProfileScreen extends Component {
   }
 
   componentWillMount = () => {
-    this.setState({ data: defaultState, change: false })
+    this.setState({ data: defaultState, change: false, showHud: true })
     this.getData()
   }
 
@@ -83,7 +83,7 @@ export default class UserProfileScreen extends Component {
   }
   componentDidUpdate = prevProps => {
     if (prevProps.data != this.props.data) {
-      this.setState({ data: this.props.data })
+      this.setState({ data: this.props.data, showHud: false })
     }
   }
 
@@ -104,11 +104,24 @@ export default class UserProfileScreen extends Component {
     }
   }
 
+  showHud = showHud => {
+    if (showHud) {
+      return (
+        <Spinner
+          visible={showHud}
+          textContent={"Loading..."}
+          textStyle={{ color: "#FFF" }}
+        />
+      )
+    }
+    return null
+  }
+
   render() {
     let state = this.state.data
-    console.log(this.props)
     return (
       <ScrollView style={styles.profileContainer}>
+        {this.showHud(this.state.showHud)}
         <View style={styles.infoContainer}>
           <TouchableOpacity
             style={styles.btnImage}
@@ -188,6 +201,7 @@ export default class UserProfileScreen extends Component {
   }
   setDataItem = item => this.setState({ data: { ...this.state.data, ...item } })
   onPressUpdate = async () => {
+    await this.setState({ showHud: true })
     await this.props.onSetUserProfile(this.state)
     await this.setState({ change: false })
   }
