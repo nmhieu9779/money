@@ -222,8 +222,6 @@ export default class UserProfileScreen extends Component {
   }
 
   handleResponse = async response => {
-    console.log(response)
-    console.log(uuid.v4())
     this.setState({ data: { ...this.state.data, avatar: response.uri } })
   }
 }

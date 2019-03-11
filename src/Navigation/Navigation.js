@@ -15,6 +15,8 @@ import CategoryContainer from "../containers/CategoryContainer"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import UserProfileScreen from "../UserProfileScreen/UserProfileScreen"
 import UserProfileContainer from "../containers/UserProfileContainer"
+import DrawerMenu from "./DrawerMenu"
+import DrawerMenuContainer from "../containers/DrawerMenuContainer"
 import {
   createStackNavigator,
   createAppContainer,
@@ -83,49 +85,55 @@ function UserProfile(props) {
   )
 }
 
-function DrawerMenu(props) {
-  onPressHome = () => {
-    props.navigation.navigate("HomeScreen")
-  }
+// class DrawerMenu extends React.Component {
+//   constructor(props) {
+//     super(props)
+//   }
 
-  onPressUserProfile = () => props.navigation.navigate("UserProfileScreen")
+//   onPressHome = () => {
+//     this.props.navigation.navigate("HomeScreen")
+//   }
 
-  onPressLogout = () => {
-    this._logoutAsync()
-  }
+//   onPressUserProfile = () => this.props.navigation.navigate("UserProfileScreen")
 
-  _logoutAsync = async () => {
-    await AsyncStorage.clear()
-    props.navigation.navigate("loginStack")
-  }
+//   onPressLogout = () => {
+//     this._logoutAsync()
+//   }
 
-  getColor = index =>
-    props.navigation.state.index === index ? "blue" : "black"
+//   _logoutAsync = async () => {
+//     await AsyncStorage.clear()
+//     this.props.navigation.navigate("loginStack")
+//   }
 
-  return (
-    <View style={{ flex: 1 }}>
-      <UserProfile
-        onPress={this.onPressUserProfile.bind(this)}
-        name={"Nguyễn Minh Hiếu"}
-        id={"nmhieu9779"}
-      />
-      <ScrollView>
-        <ItemMenu
-          color={this.getColor(0)}
-          iconName={"home"}
-          textName={"Home"}
-          onPress={this.onPressHome.bind(this)}
-        />
-      </ScrollView>
-      <ItemMenu
-        color={this.getColor(1)}
-        iconName={"sign-out"}
-        textName={"Logout"}
-        onPress={this.onPressLogout.bind(this)}
-      />
-    </View>
-  )
-}
+//   getColor = index =>
+//     this.props.navigation.state.index === index ? "blue" : "black"
+
+//   render() {
+//     return (
+//       <View style={{ flex: 1 }}>
+//         <UserProfile
+//           onPress={this.onPressUserProfile.bind(this)}
+//           name={"Nguyễn Minh Hiếu"}
+//           id={"nmhieu9779"}
+//         />
+//         <ScrollView>
+//           <ItemMenu
+//             color={this.getColor(0)}
+//             iconName={"home"}
+//             textName={"Home"}
+//             onPress={this.onPressHome.bind(this)}
+//           />
+//         </ScrollView>
+//         <ItemMenu
+//           color={this.getColor(1)}
+//           iconName={"sign-out"}
+//           textName={"Logout"}
+//           onPress={this.onPressLogout.bind(this)}
+//         />
+//       </View>
+//     )
+//   }
+// }
 
 const styles = {
   iconLeft: { padding: 10, width: 60 },
@@ -218,7 +226,7 @@ const DrawerStack = createDrawerNavigator(
   },
   {
     initialRouteName: "HomeScreen",
-    contentComponent: DrawerMenu
+    contentComponent: DrawerMenuContainer
   }
 )
 
