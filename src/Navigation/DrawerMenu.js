@@ -78,6 +78,7 @@ export default class DrawerMenu extends React.Component {
   _logoutAsync = async () => {
     await AsyncStorage.clear()
     this.props.navigation.navigate("loginStack")
+    this.props.onFetch()
   }
 
   getColor = index =>

@@ -1,13 +1,18 @@
 import { connect } from "react-redux"
 import DrawerMenu from "../Navigation/DrawerMenu"
-import {} from "../actions"
+import { fetchWalletUserAction, fetchHistoryUserAction } from "../actions"
 
 const mapStateToProps = state => {
   return state.userProfileReducers
 }
 
 const mapDispatchToProps = dispatch => {
-  return {}
+  return {
+    onFetch: () => {
+      dispatch(fetchWalletUserAction("default"))
+      dispatch(fetchHistoryUserAction("default"))
+    }
+  }
 }
 
 const DrawerMenuContainer = connect(
