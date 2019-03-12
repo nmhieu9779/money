@@ -35,7 +35,8 @@ export default class CategoryScreen extends Component {
       visibleEdit: false,
       visible: false,
       listParentCategory: [],
-      editCategory: { item: { icon: "", name: "" }, key: "" }
+      editCategory: { item: { icon: "", name: "" }, key: "" },
+      showHud: false
     }
   }
 
@@ -43,10 +44,16 @@ export default class CategoryScreen extends Component {
     this.setState({ visible: visible })
   }
 
-  // componentWillMount = () => this.setState({ showHud: true })
+  componentWillMount = () => this.setState({ showHud: true })
 
   componentDidMount() {
     this.getCategoryFromSever()
+  }
+
+  componentDidUpdate = prevProps => {
+    if (prevProps.data.category != this.props.data.category) {
+      this.setState({ showHud: false })
+    }
   }
 
   getCategoryFromSever = () => {
@@ -130,6 +137,8 @@ export default class CategoryScreen extends Component {
         return "tshirt"
       case "auto-and-transport":
         return "map-marked-alt"
+      case "income":
+        return "plus-circle"
       default:
         return "question"
     }
@@ -152,6 +161,7 @@ export default class CategoryScreen extends Component {
   }
 
   onPressAddCategory = async newCategory => {
+    await this.setState({ showHud: true })
     await this.props.onAddCategory(newCategory)
     await this.setState({ visible: false })
   }
@@ -175,11 +185,13 @@ export default class CategoryScreen extends Component {
   }
 
   onPressEditCategory = async (dataNew, dataOld) => {
+    await this.setState({ showHud: true })
     await this.props.onEditCategory(dataNew, dataOld)
     await this.setState({ visibleEdit: false })
   }
 
   onPressDeleteCategory = async category => {
+    await this.setState({ showHud: true })
     await this.props.onDeleteCategory(category)
     await this.setState({ visibleEdit: false })
   }
@@ -201,7 +213,7 @@ export default class CategoryScreen extends Component {
     let me = this
     return (
       <View style={styles.categoryContainer}>
-        {this.showHud(this.props.showHud)}
+        {this.showHud(this.state.showHud)}
         {this.addCategoryScreen(this.state.visible)}
         {this.editCategoryScreen(this.state.visibleEdit)}
         <FlatList

@@ -1,7 +1,5 @@
 import { fromJS } from "immutable"
 import {
-  OPEN_HUD,
-  CLOSE_HUD,
   FETCH_CATEGORY,
   FETCH_CATEGORY_SUCCESS,
   FETCH_CATEGORY_FAILED,
@@ -29,12 +27,6 @@ const categoryReducers = (state = initState, action) => {
       break
     case FETCH_CATEGORY_FAILED:
       console.log("failed")
-      break
-    case OPEN_HUD:
-      newState.showHud = true
-      break
-    case CLOSE_HUD:
-      newState.showHud = false
       break
     case ADD_CATEGORY_FAILED:
       console.log(action.error)

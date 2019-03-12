@@ -38,6 +38,10 @@ export default class HomeScreen extends Component {
       this.setState({ showHud: false })
     }
   }
+
+  formatTotal = total =>
+    total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+
   render() {
     return (
       <View style={styles.homeContainer}>
@@ -45,7 +49,7 @@ export default class HomeScreen extends Component {
         <View style={[styles.financialContainer, styles.boxShadow]}>
           <Text style={styles.financialLabel}>FINANCIAL STATEMENT</Text>
           <Text style={styles.financialStatement}>
-            {this.props.total}
+            {this.formatTotal(this.props.total)}
             {"₫"}
           </Text>
         </View>

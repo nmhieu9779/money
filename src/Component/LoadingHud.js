@@ -1,6 +1,16 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { StyleSheet, View, Text, Modal, ActivityIndicator } from "react-native"
+import {
+  StyleSheet,
+  View,
+  Text,
+  Modal,
+  ActivityIndicator,
+  SafeAreaView,
+  Platform,
+  StatusBar,
+  Dimensions
+} from "react-native"
 
 const transparent = "transparent"
 const styles = StyleSheet.create({
@@ -9,7 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: transparent,
     position: "absolute",
     top: 0,
-    bottom: 0,
+    bottom: -StatusBar.currentHeight,
     left: 0,
     right: 0
   },
