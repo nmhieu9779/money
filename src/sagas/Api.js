@@ -216,6 +216,89 @@ function* uploadImageAsync(uri) {
   return yield snapshot.ref.getDownloadURL()
 }
 
+function* loginWithEmail(data) {
+  let responseLogin = {}
+  yield firebase
+    .auth()
+    .signInWithEmailAndPassword(data.email, data.password)
+    .then(response => {
+      responseLogin = { status: "success", uid: response.user.uid }
+    })
+    .catch(error => {
+      responseLogin = { status: "failed", message: error.message }
+    })
+  return responseLogin
+}
+
+function* registrationWithEmail(data) {
+  let responseRegistration = {}
+  let { email, password, rePassword } = data
+
+  if (password != "" && password === rePassword) {
+    yield firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(response => {
+        responseRegistration = {
+          status: "success",
+          uid: response.user.uid,
+          email: email,
+          password: password
+        }
+      })
+      .catch(error => {
+        responseRegistration = { message: error.message, status: "failed" }
+      })
+  } else {
+    responseRegistration = {
+      message: "Incorrect Password",
+      status: "failed"
+    }
+  }
+
+  return responseRegistration
+}
+
+function* addDataNewUser(uid) {
+  let defaultDataHistory = Object.assign({}, { data: [] })
+  let defaultDataProfile = Object.assign(
+    {},
+    {
+      address: "",
+      avatar: "",
+      dob: "01/01/2019",
+      nameDisplay: "User",
+      occupations: "",
+      sex: "Male",
+      tel: ""
+    }
+  )
+  let defaultWallet = Object.assign({}, { total: 0 })
+  yield firebase
+    .firestore()
+    .collection("history")
+    .doc(uid)
+    .set(defaultDataHistory)
+    .then()
+    .catch()
+  yield firebase
+    .firestore()
+    .collection("profile")
+    .doc(uid)
+    .set(defaultDataProfile)
+    .then()
+    .catch()
+  yield firebase
+    .firestore()
+    .collection("wallet")
+    .doc(uid)
+    .set(defaultWallet)
+    .then()
+    .catch()
+
+  return
+}
+
 export const Api = {
   getCategoryFromFireBase,
   addCategory,
@@ -225,5 +308,8 @@ export const Api = {
   fetchHistoryUser,
   addTransaction,
   getUserProfile,
-  setUserProfile
+  setUserProfile,
+  loginWithEmail,
+  registrationWithEmail,
+  addDataNewUser
 }

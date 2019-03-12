@@ -9,8 +9,10 @@ import {
 import HomeScreen from "../HomeScreen/HomeScreen"
 import HomeContainer from "../containers/HomeContainer"
 import LoginScreen from "../LoginScreen/LoginScreen"
+import LoginContainer from "../containers/LoginContainer"
 import SplashScreen from "../SplashScreen/SplashScreen"
 import RegistrationScreen from "../RegistrationScreen/RegistrationScreen"
+import RegistrationContainer from "../containers/RegistrationContainer"
 import CategoryContainer from "../containers/CategoryContainer"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import UserProfileScreen from "../UserProfileScreen/UserProfileScreen"
@@ -239,8 +241,8 @@ const DrawerNavigation = createStackNavigator(
 
 const LoginStack = createStackNavigator(
   {
-    loginScreen: { screen: LoginScreen },
-    registrationScreen: { screen: RegistrationScreen }
+    loginScreen: { screen: LoginContainer },
+    registrationScreen: { screen: RegistrationContainer }
   },
   { headerMode: "none" }
 )

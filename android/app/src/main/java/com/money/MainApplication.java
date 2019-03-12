@@ -8,7 +8,6 @@ import com.BV.LinearGradient.LinearGradientPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.hieuvp.fingerprint.ReactNativeFingerprintScannerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -42,8 +41,7 @@ public class MainApplication extends Application implements ReactApplication {
             new LinearGradientPackage(),
             new RNGestureHandlerPackage(),
             new FBSDKPackage(mCallbackManager),
-            new VectorIconsPackage(),
-            new ReactNativeFingerprintScannerPackage()
+            new VectorIconsPackage()
       );
     }
 

@@ -85,7 +85,6 @@ export default class DrawerMenu extends React.Component {
     this.props.navigation.state.index === index ? "blue" : "black"
 
   render() {
-    console.log(this.props)
     return (
       <View style={{ flex: 1 }}>
         <UserProfile

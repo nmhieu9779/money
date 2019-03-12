@@ -15,7 +15,7 @@ import moment from "moment"
 const defaultState = {
   iconName: "question",
   categoryName: "Select Category",
-  amount: 0,
+  amount: "",
   description: "",
   time: new Date(),
   status: "expense"
@@ -44,7 +44,6 @@ export default class AddTransactionsScreen extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <View style={styles.addTransactionsComponent}>
         <View style={styles.amountContainer}>
@@ -53,10 +52,12 @@ export default class AddTransactionsScreen extends Component {
             <Hoshi
               style={{ flex: 1 }}
               textAlign={"right"}
-              value={this.state.amount}
+              value={this.formatMoney(this.state.amount)}
               keyboardType={"numeric"}
               paddingProps={0}
-              onChangeText={text => this.setState({ amount: text })}
+              onChangeText={text =>
+                this.setState({ amount: this.unFormatMoney(text) })
+              }
             />
             <Text style={styles.labelAmount}>{"₫"}</Text>
           </View>
@@ -155,6 +156,8 @@ export default class AddTransactionsScreen extends Component {
       alert("Please Try Again")
     }
   }
+  formatMoney = money => money.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+  unFormatMoney = money => money.replace(/,/g, "")
 }
 
 const styles = StyleSheet.create({

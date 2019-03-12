@@ -4,18 +4,35 @@ import Hoshi from "../Component/Hoshi"
 import firebase from "../../Firebase"
 import MessageBox from "../Component/MessageBox"
 
+defaultState = {
+  email: "",
+  password: "",
+  rePassword: "",
+  showMessageBox: false
+}
 export default class RegistrationScreen extends Component {
   constructor() {
     super()
-    this.state = {
-      email: "",
-      password: "",
-      rePassword: "",
-      showMessageBox: false,
-      message: "",
-      status: ""
+    this.state = {}
+  }
+
+  componentWillMount = () => this.setState(defaultState)
+
+  componentDidUpdate = prevProps => {
+    let me = this
+    if (prevProps != this.props) {
+      if (this.props.status === "success") {
+        me.props.onAddDataNewUser(me.props.uid)
+        const { params } = me.props.navigation.state
+        const { goBack } = me.props.navigation
+        goBack()
+        params.getEmailPassword()
+      } else {
+        me.setState({ showMessageBox: true })
+      }
     }
   }
+
   render() {
     var { email, password, rePassword } = this.state
     return (
@@ -58,30 +75,8 @@ export default class RegistrationScreen extends Component {
   }
   onRegistration = () => {
     const { email, password, rePassword } = this.state
-    let me = this
-    if (this.validatePassword(password, rePassword)) {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(() => me.props.navigation.navigate("loginScreen"))
-        .catch(error =>
-          this.setState({
-            showMessageBox: true,
-            message: error.message,
-            status: "Registration Fail"
-          })
-        )
-    } else {
-      this.setState({
-        showMessageBox: true,
-        message: "Incorrect Password",
-        status: "Registration Fail"
-      })
-    }
+    this.props.onRegistrationWithEmail({ email, password, rePassword })
   }
-
-  validatePassword = (password, rePassword) =>
-    password != "" && password === rePassword
 
   showMessageBox = () =>
     this.state.showMessageBox ? (
@@ -89,8 +84,8 @@ export default class RegistrationScreen extends Component {
         onPressOk={() => {
           this.setState({ showMessageBox: false, message: "", status: "" })
         }}
-        message={this.state.message}
-        status={this.state.status}
+        message={this.props.message}
+        status={"Registration Failed"}
       />
     ) : null
 }

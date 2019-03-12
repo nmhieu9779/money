@@ -33,3 +33,15 @@ export const GET_USER_PROFILE_FAILED = "get_user_profile_failed"
 export const SET_USER_PROFILE = "set_user_profile"
 export const SET_USER_PROFILE_SUCCESS = "set_user_profile_success"
 export const SET_USER_PROFILE_FAILED = "set_user_profile_failed"
+
+export const LOGIN_WITH_EMAIL = "login_with_email"
+export const LOGIN_WITH_EMAIL_SUCCESS = "login_with_email_success"
+export const LOGIN_WITH_EMAIL_FAILED = "login_with_email_failed"
+
+export const REGISTRATION_WITH_EMAIL = "registration_with_email"
+export const REGISTRATION_WITH_EMAIL_SUCCESS = "registration_with_email_success"
+export const REGISTRATION_WITH_EMAIL_FAILED = "registration_with_email_failed"
+
+export const ADD_DATA_NEW_USER = "add_data_new_user"
+export const ADD_DATA_NEW_USER_SUCCESS = "add_data_new_user_success"
+export const ADD_DATA_NEW_USER_FAILED = "add_data_new_user_failed"

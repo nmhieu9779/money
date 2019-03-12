@@ -4,6 +4,8 @@ import { watchHome } from "./homeSagas"
 import { watchHistory } from "./historySagas"
 import { watchTransaction } from "./transactionSagas"
 import { watchUserProfile } from "./userProfileSagas"
+import { watchLogin } from "./loginSagas"
+import { watchRegistration } from "./registrationSagas"
 
 export default function* rootSaga() {
   yield all([
@@ -11,6 +13,8 @@ export default function* rootSaga() {
     watchHome(),
     watchHistory(),
     watchTransaction(),
-    watchUserProfile()
+    watchUserProfile(),
+    watchLogin(),
+    watchRegistration()
   ])
 }

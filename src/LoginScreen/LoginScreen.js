@@ -11,16 +11,32 @@ import Hoshi from "../Component/Hoshi"
 import firebase from "../../Firebase"
 import { LoginManager, AccessToken } from "react-native-fbsdk"
 import MessageBox from "../Component/MessageBox"
+
+defaultState = { email: "", password: "", showMessageBox: false }
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      email: "",
-      password: "",
-      showMessageBox: false,
-      message: "",
-      status: ""
+    this.state = {}
+  }
+
+  componentWillMount = () => this.setState(defaultState)
+
+  componentDidUpdate = prevProps => {
+    let me = this
+    if (prevProps.login != this.props.login) {
+      if (this.props.login.status === "failed") {
+        me.setState({ showMessageBox: true })
+      } else {
+        me._loginAsync(this.props.login.uid)
+      }
     }
+  }
+
+  getEmailPassword = () => {
+    this.setState({
+      email: this.props.registration.email,
+      password: this.props.registration.password
+    })
   }
 
   render() {
@@ -86,19 +102,7 @@ export default class LoginScreen extends Component {
   }
   onLogin = () => {
     const { email, password } = this.state
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(response => {
-        this._loginAsync(response.user.uid)
-      })
-      .catch(error =>
-        this.setState({
-          showMessageBox: true,
-          message: error.message,
-          status: "Login Fail"
-        })
-      )
+    this.props.onLoginWithEmail({ email, password })
   }
   onLoginFacebook = () => {
     LoginManager.logInWithReadPermissions(["email"]).then(
@@ -128,7 +132,9 @@ export default class LoginScreen extends Component {
     )
   }
   onRegistration = () => {
-    this.props.navigation.navigate("registrationScreen")
+    this.props.navigation.navigate("registrationScreen", {
+      getEmailPassword: this.getEmailPassword.bind(this)
+    })
   }
 
   _loginAsync = async uid => {
@@ -140,10 +146,10 @@ export default class LoginScreen extends Component {
     this.state.showMessageBox ? (
       <MessageBox
         onPressOk={() => {
-          this.setState({ showMessageBox: false, message: "", status: "" })
+          this.setState({ showMessageBox: false })
         }}
-        message={this.state.message}
-        status={this.state.status}
+        message={this.props.login.message}
+        status={"Login Failed"}
       />
     ) : null
 }

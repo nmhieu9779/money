@@ -4,7 +4,7 @@ import {
   FETCH_WALLET_USER_FAILED
 } from "../actions/actionTypes"
 
-initStateHome = { total: 0 }
+initStateHome = { total: -1 }
 
 const homeReducers = (state = initStateHome, action) => {
   let newState = fromJS(state).toJS()

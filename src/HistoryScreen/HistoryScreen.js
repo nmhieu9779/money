@@ -42,7 +42,9 @@ export default class HistoryScreen extends Component {
         <View style={styles.titleItemContainer}>
           <Text style={styles.titleItem}>{item.work}</Text>
           <View style={[styles.amountContainer, { borderColor: color }]}>
-            <Text style={[styles.amount, { color: color }]}>{item.amount}</Text>
+            <Text style={[styles.amount, { color: color }]}>
+              {me.formatMoney(item.amount)}
+            </Text>
           </View>
         </View>
         <View style={styles.itemLabel}>
@@ -61,6 +63,9 @@ export default class HistoryScreen extends Component {
 
   _keyExtractor = (item, index) =>
     moment(new Date(item.time)).format() + index.toString()
+
+  formatMoney = money =>
+    money.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
 }
 
 const styles = StyleSheet.create({
